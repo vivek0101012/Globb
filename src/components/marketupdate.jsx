@@ -54,14 +54,14 @@ return <div className=" py-16 text-white font-satoshi mt-[-40px]">
               
                 <td className="px-4 py-2  border-b-2 border-opacity-40  border-gray-500 border-opacity-4   ">
                     <div className=" flex justify-center items-center space-x-5 md:space-x-10">
-                                             <img className=" " src={`public/images/${e.symbol}.png`} alt="" /> 
+                                             <img className=" " src={`/images/${e.symbol}.png`} alt="" /> 
                                         
                             
                     
                     
                                     <img 
                     className="w-8 md:h-8 h-4 "
-                      src={e.c > e.pc ? "public/images/up.png" : "public/images/down.png"} 
+                      src={e.c > e.pc ? "/images/up.png" : "/images/down.png"} 
                       alt="Stock Trend" 
                     />
                     </div>

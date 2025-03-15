@@ -12,7 +12,7 @@ return <div className=" w-full p-1 flex flex-col justify-center items-center  fo
 <div className="  bg-gradient-to-br from-[#171F2E]/30 to-[#0A1E42]/30 backdrop-blur-lg border-[0.25px] border-white/10  text-white shadow-lg  rounded-full p-2  flex justify-center items-center space-x-4 px-6 ">
 
 
-<img src="src/images/logo.png" className="h-[24px] " alt="" />
+<img src="/images/logo.png" className="h-[24px] " alt="" />
 
 <div className=" active:scale-90"> Globb </div>
 
@@ -52,9 +52,9 @@ return <div className=" w-full p-1 flex flex-col justify-center items-center  fo
 <div className="flex items-center justify-center w-8" onClick={()=>{setisopen(!isopen)} } >
 { isopen? 
           
-          <img src="src/images/close.png " className="active:scale-95" width={20}  alt="" /> 
+          <img src="/images/close.png " className="active:scale-95" width={20}  alt="" /> 
       :
-        <img src="src/images/menu.png " className="active:scale-95" width={20} alt="" /> 
+        <img src="/images/menu.png " className="active:scale-95" width={20} alt="" /> 
 
       }
 
