@@ -1,10 +1,10 @@
 
 import { use } from "react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { data, Link } from "react-router-dom";
 
 export  default function  Market(){
-
+  const [count,setcount]=useState(0);
 
     const stockSymbols = [
         "AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "META", "BRK.B", "JPM", "V",
@@ -52,8 +52,6 @@ let currentindex=20;
       
       
       const [isopen,setisopen ]=useState(false)
-      
-      const [loading,setloading]=useState(false)
           const apiKey = "cv9fb89r01qkfpsjhdj0cv9fb89r01qkfpsjhdjg";
       const [Card,setcard]=useState({})
       
@@ -101,12 +99,13 @@ useEffect( ()=>{
   setTimeout(() => {
     {setsym((prev)=>{
 
-      const newarr= stockSymbols.splice(currentindex ,currentindex+9 );
+      const newarr= stockSymbols.slice(currentindex ,currentindex+9 );
+      currentindex+=9;
           return    [...prev,...newarr]
        }
       )}
     
-  }, 200);
+  }, 0);
   
 }
 
@@ -212,7 +211,7 @@ useEffect( ()=>{
 {
   sym.map((e,index)=>(
 
-<Stockcard key={index} isopen={isopen} setisopen={setisopen} symbol={e}></Stockcard>
+<Stockcard key={index}  count={count} setcount={setcount} symbol={e}></Stockcard>
 
 
 
@@ -244,24 +243,55 @@ useEffect( ()=>{
 
 }
 
-export function Stockcard({symbol,isopen,setisopen}){
+export function Stockcard({symbol,count,setcount}){
     const apiKey = "cv9fb89r01qkfpsjhdj0cv9fb89r01qkfpsjhdjg";
+
+
+    const keys=[ 
+
+"cvbhj19r01qob7udmbdgcvbhj19r01qob7udmbe0"
+,
+
+ "cv9fb89r01qkfpsjhdj0cv9fb89r01qkfpsjhdjg"
+
+ ,
+
+ "cvbhjgpr01qob7udmeggcvbhjgpr01qob7udmeh0"
+ ,
+
+ "cvbhjopr01qob7udmg80cvbhjopr01qob7udmg8g"
+ ,
+ "cvbhjv9r01qob7udmhe0cvbhjv9r01qob7udmheg"
+ ,
+
+"cvbhk91r01qob7udmjb0cvbhk91r01qob7udmjbg"
+,
+"cvbhkfhr01qob7udmkggcvbhkfhr01qob7udmkh0"
+,
+"cvbhkn1r01qob7udmlr0cvbhkn1r01qob7udmlrg"
+,
+"cvbhlj9r01qob7udmqhgcvbhlj9r01qob7udmqi0"
+
+    ]
 const [Card,setcard]=useState({})
+
+
+// if(count==keys.length){ count=0;}
 
 useEffect (()=>{
 
 const asynfn= async ()=>{
 
 
-
-    const res= await  fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${apiKey}`)
+    const res= await  fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${keys[count]}`)
     const rem= await res.json();
-    const data=  await rem;
+    const data=rem;
     setcard(data)
 
 
 
 
+    setcount ((prev)=>{ (prev+1)%(keys.length-1)})
 
 
 
@@ -272,7 +302,14 @@ asynfn();
 } ,[symbol] )
 
 
-if(!Card ){return}
+
+
+if (Card.pc === undefined || Card.pc === null) {
+  return <></>;
+}
+
+
+
 
 return <div className=" hover:scale-105 transition-transform duration-300  p-6 rounded-lg border-white border-2 flex flex-col space-y-4 md:space-y-8   text-white font-satoshi justify-center items-center ">
 <div><img src={`https://financialmodelingprep.com/image-stock/${symbol}.png`} className="w-10 h-10" alt="" /></div>
