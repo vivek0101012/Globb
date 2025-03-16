@@ -5,27 +5,24 @@ import { Link } from "react-router-dom";
 
 export  default function  Market(){
 
-    const sym = [
-        "AAPL",  // Apple
-        "AMZN",  // Amazon
-        "GOOGL", // Alphabet (Google)
-        "MSFT",  // Microsoft
-        "NVDA",  // Nvidia
-        "META",  // Meta (Facebook)
-        "NFLX",  // Netflix
-        "AMD",   // Advanced Micro Devices
-        "INTC",  // Intel
-        "BABA",  // Alibaba
-        "NIO",   // Nio Inc
-        "SPCE",  // Virgin Galactic
-        "PLTR",  // Palantir Technologies
-        "RIVN",  // Rivian Automotive
-        "LCID",  // Lucid Motors
-        "ARKK"   // ARK Innovation ETF
+
+    const stockSymbols = [
+        "AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "META", "BRK.B", "JPM", "V",
+        "JNJ", "UNH", "XOM", "PG", "HD", "MA", "CVX", "ABBV", "PFE", "KO",
+        "PEP", "COST", "ADBE", "MRK", "NFLX", "DIS", "CSCO", "INTC", "VZ", "T",
+        "WMT", "NKE", "LLY", "MCD", "ORCL", "AMD", "BAC", "TMO", "PM", "HON",
+        "IBM", "ABT", "ACN", "TXN", "AVGO", "QCOM", "LIN", "UNP", "GS", "NOW",
+        "BMY", "C", "BLK", "PYPL", "ISRG", "RTX", "LMT", "SPGI", "CAT", "MDT",
+        "MO", "DE", "ADI", "DUK", "AMAT", "TGT", "SCHW", "DHR", "LOW", "SO",
+        "APD", "CB", "MMC", "PGR", "CI", "ADP", "PLD", "HUM", "CME", "NEE",
+        "TJX", "VRTX", "REGN", "LRCX", "ROP", "MS", "USB", "ELV", "AON", "CL",
+        "ECL", "D", "BSX", "GILD", "GM", "FDX", "SYK", "MU", "EQIX", "FISV",
+        "WM", "IDXX", "ITW", "EW", "ZTS", "SYY", "MCO", "SHW"
       ];
+      
+      const [sym,setsym]=useState(stockSymbols.slice(0,19))
 
-
-
+let currentindex=20;
 
 
       const [query, setQuery] = useState(""); 
@@ -56,6 +53,7 @@ export  default function  Market(){
       
       const [isopen,setisopen ]=useState(false)
       
+      const [loading,setloading]=useState(false)
           const apiKey = "cv9fb89r01qkfpsjhdj0cv9fb89r01qkfpsjhdjg";
       const [Card,setcard]=useState({})
       
@@ -68,9 +66,10 @@ export  default function  Market(){
           const res= await  fetch(`https://finnhub.io/api/v1/quote?symbol=${querym}&token=${apiKey}`)
           const rem= await res.json();
           const data=  await rem;
-          setcard(data)
-      
-      
+          
+    
+        setcard(data)
+           
       
       
       
@@ -87,9 +86,48 @@ export  default function  Market(){
 const add = ()=>{
     setQuerym(query);
     setisopen(!isopen)
+
 }
 
-    return <div className=" w-full  flex flex-col space-y-28 items-center text-white  justify-center">
+
+
+useEffect( ()=>{
+
+
+    const handlescroll =()=>{   if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 10){
+
+ if(currentindex+9<=stockSymbols.length){ 
+  
+  setTimeout(() => {
+    {setsym((prev)=>{
+
+      const newarr= stockSymbols.splice(currentindex ,currentindex+9 );
+          return    [...prev,...newarr]
+       }
+      )}
+    
+  }, 200);
+  
+}
+
+    }
+    
+    
+    }
+    
+    
+    window.addEventListener( "scroll",handlescroll )
+    return () => window.removeEventListener("scroll", handlescroll);
+     
+    
+    },[] )
+    
+
+
+
+
+
+    return <div className=" z-0 w-full  flex flex-col space-y-28 items-center text-white  justify-center">
 
 
 
@@ -162,9 +200,10 @@ const add = ()=>{
 
 
 
+<div className=" md:text-3xl text-2xl font-semibold">
+  Market <span className="text-blue-500 drop-shadow-[0_0_10px_#3b82f6] shadow-sm hover:drop-shadow-[0_0_20px_#3b82f6]">Insight</span>
+</div>
 
-
-<div className=" text-3xl  text-wrap "> Market <span className=" text-blue-600"> Overview</span> </div>
 
 
  <div className="grid md:grid-cols-4  grid-cols-1 justify-center gap-10 ">
@@ -173,7 +212,7 @@ const add = ()=>{
 {
   sym.map((e,index)=>(
 
-<Stockcard key={index} symbol={e}></Stockcard>
+<Stockcard key={index} isopen={isopen} setisopen={setisopen} symbol={e}></Stockcard>
 
 
 
@@ -205,7 +244,7 @@ const add = ()=>{
 
 }
 
-export function Stockcard({symbol}){
+export function Stockcard({symbol,isopen,setisopen}){
     const apiKey = "cv9fb89r01qkfpsjhdj0cv9fb89r01qkfpsjhdjg";
 const [Card,setcard]=useState({})
 
@@ -226,7 +265,6 @@ const asynfn= async ()=>{
 
 
 
-
 }
 asynfn();
 
@@ -236,7 +274,7 @@ asynfn();
 
 if(!Card ){return}
 
-return <div className=" p-6 rounded-lg border-white border-2 flex flex-col space-y-4 md:space-y-8   text-white font-satoshi justify-center items-center ">
+return <div className=" hover:scale-105 transition-transform duration-300  p-6 rounded-lg border-white border-2 flex flex-col space-y-4 md:space-y-8   text-white font-satoshi justify-center items-center ">
 <div><img src={`https://financialmodelingprep.com/image-stock/${symbol}.png`} className="w-10 h-10" alt="" /></div>
 
 <div className=" flex space-x-2  items-center justify-center"> <h1> Current: ${Card.c ?? "N/A"}  </h1>
@@ -250,8 +288,8 @@ return <div className=" p-6 rounded-lg border-white border-2 flex flex-col space
 } ` } >Change: {Card.dp ? `${Card.dp}%` : "N/A"}</div>
 
 <div className=" flex items-center justify-center space-x-4 ">
-    <button className= {`px-4 py-2 text-center rounded-xl active:scale-95  bg-green-500 ${Card.c>Card.pc?"animate-pulse":"" }` }>  Buy</button>
-    <button className=  {`px-4 py-2 text-center rounded-xl active:scale-95  bg-red-500 ${Card.pc>Card.c?"animate-pulse":"" }` }>  Sell</button>
+    <button className= {`px-4 py-2 hover:bg-green-400 transition-all duration-300 text-center rounded-xl active:scale-95  bg-green-600 ${Card.c>Card.pc?"animate-pulse":"" }` }>  Buy</button>
+    <button className=  {`px-4 hover:bg-red-400 transition-all duration-300 py-2 text-center rounded-xl active:scale-95  bg-red-600 ${Card.pc>Card.c?"animate-pulse":"" }` }>  Sell</button>
 </div>
 
 

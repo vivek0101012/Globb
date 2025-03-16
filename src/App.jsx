@@ -1,3 +1,4 @@
+import Footer from "./components/footer"
 import Home from "./components/home"
 import Market from "./components/markepage"
 import Marketupdate from "./components/marketupdate"
@@ -9,9 +10,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 function App(){
 
   return <div className=" font-lemonMilk w-full min-h-screen bg-[#080E1A]">
-  
+
 <Router>
-<Navbar></Navbar>
+<Navbar></Navbar> 
 <Routes>
 
 
@@ -24,6 +25,8 @@ function App(){
 
 
 </Router>
+
+<Footer></Footer>
 
   </div>
 
