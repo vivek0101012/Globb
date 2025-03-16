@@ -133,7 +133,7 @@ const add = ()=>{
 
 
 
-(isopen ? <div className=" p-6 rounded-lg border-white border-2 flex flex-col space-y-4 md:space-y-8   text-white font-satoshi justify-center items-center">
+(isopen ? <div className=" p-6 rounded-lg border-white border-2 flex flex-col space-y-4 md:space-y-6   text-white font-satoshi justify-center items-center">
 
 <div className="w-full flex justify-end " onClick={()=>{ setisopen(!isopen)}}>      <img src="/images/close.png " className="active:scale-95" width={20}  alt="" />  </div>
 
