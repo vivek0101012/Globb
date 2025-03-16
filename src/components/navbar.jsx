@@ -1,5 +1,5 @@
 import { useState } from "react"
-
+import { Link } from "react-router-dom"
 export default function  Navbar(){
 
 const [isopen,setisopen ]=useState(false);
@@ -23,11 +23,12 @@ return <div className=" w-full p-1 flex flex-col justify-center items-center  fo
 
 <div className=" flex justify-center space-x-6 px-4 items-center">  
 
-<div className=" active:scale-90">Home</div>
+<Link to="/"><div className=" active:scale-90">Home</div></Link>
 
-<div className=" active:scale-90">Market</div>
-<div className=" active:scale-90">Portfolio</div>
-<div className=" active:scale-90">Trade</div>
+<Link to="/market"><div className=" active:scale-90">Market</div></Link>
+<Link to="/portfolio"><div className=" active:scale-90">Portfolio</div></Link>
+<Link to="/trade"><div className=" active:scale-90">Trade</div></Link>
+
 
 </div>
 
@@ -92,9 +93,12 @@ export function Mobilemenu(){
 return <div className=" w-9/12 bg-gradient-to-br font-thin from-[#171F2E]/30 to-[#0A1E42]/30 backdrop-blur-lg border border-white/10  text-white shadow-lg rounded-lg flex-col sm:flex flex justify-center items-center mt-[-20px] space-y-4 p-4 "> 
 
 
-<div className=" active:scale-90">Market</div>
-<div className=" active:scale-90">Portfolio</div>
-<div className=" active:scale-90">Trade</div>
+<Link to="/"><div className=" active:scale-90">Home</div></Link>
+
+<Link to="/market"><div className=" active:scale-90">Market</div></Link>
+<Link to="/portfolio"><div className=" active:scale-90">Portfolio</div></Link>
+<Link to="/trade"><div className=" active:scale-90">Trade</div></Link>
+
 <div>Login</div>
 <div className="py-2 px-4  flex justify-center items-center active:scale-90 border-[0.25px]  border-[#90AFEE] opacity-80 shadow-inner  shadow-sm shadow-[#90AFEE] rounded-full  " >signin</div>
 

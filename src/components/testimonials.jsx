@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 const testimonials = [
     {
@@ -82,6 +83,7 @@ export default function Testimonials() {
 
 export function Card({reviews}){
 
+  // eslint-disable-next-line react/prop-types
   const { image, name, review ,stars} = reviews;
  return <div className="   rounded-md h-[300px] border-2 border-gray-600 min-w-[250px]  flex flex-col shadow-lg py-2 px-4  space-y-2   " >
 

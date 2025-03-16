@@ -23,7 +23,7 @@ const fetchdata = async ()=>{
 
           const data = await Promise.all(requests);
           setdetails(data)
-console.log(data)
+
 
 
 

@@ -1,18 +1,30 @@
 import Home from "./components/home"
+import Market from "./components/markepage"
 import Marketupdate from "./components/marketupdate"
 import Navbar from "./components/navbar"
 import Testimonials from "./components/testimonials"
 
-
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 
 function App(){
 
   return <div className=" font-lemonMilk w-full min-h-screen bg-[#080E1A]">
-
+  
+<Router>
 <Navbar></Navbar>
-<Home></Home>
-<Marketupdate></Marketupdate>
-<Testimonials></Testimonials>
+<Routes>
+
+
+<Route path="/" element={<> <Home /> <Marketupdate /> <Testimonials /> </> } />
+
+<Route path="/market" element={<Market />} />
+
+</Routes>
+
+
+
+</Router>
+
   </div>
 
 }

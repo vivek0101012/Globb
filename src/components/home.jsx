@@ -19,7 +19,7 @@ return <div className=" py-10  mt-[-10] flex justify-center ">
 <div className=" md:text-3xl text-lg  text-wrap "> Trade without limits, learn without risks.<br/>  <span className=" sm:text-sm opacity-75 ">real-time, and 100% educational.</span> </div>
 
 
-<div className="py-2 px-4  flex justify-center  active:scale-90 border-[0.25px]  border-[#90AFEE] opacity-80 shadow-inner  shadow-sm shadow-[#90AFEE] rounded-full  " >
+<div className="py-2 px-4  flex justify-center  active:scale-90 border-[0.25px]  border-[#90AFEE] opacity-80 shadow-inner shadow-[#90AFEE] rounded-full  " >
     Get Started 
 </div>
 
