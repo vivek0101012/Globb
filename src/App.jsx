@@ -3,6 +3,7 @@ import Home from "./components/home"
 import Market from "./components/markepage"
 import Marketupdate from "./components/marketupdate"
 import Navbar from "./components/navbar"
+import Portfolio from "./components/portfoliopage"
 import Testimonials from "./components/testimonials"
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
@@ -19,7 +20,7 @@ function App(){
 <Route path="/" element={<> <Home /> <Marketupdate /> <Testimonials /> </> } />
 
 <Route path="/market" element={<Market />} />
-
+<Route path="/portfolio" element={<Portfolio />} />
 </Routes>
 
 
