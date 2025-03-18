@@ -48,7 +48,8 @@ return <div className=" w-full p-1 flex flex-col justify-center items-center  fo
 
 <div className="  md:hidden bg-gradient-to-br font-thin from-[#171F2E]/30 to-[#0A1E42]/30 backdrop-blur-lg border border-white/10  text-white shadow-lg rounded-full sm:flex flex justify-center items-center p-2 px-2 space-x-4">
 
-<div className=" active:scale-90">Home</div>
+<Link to="/"><div className=" active:scale-90">Home</div></Link>
+
 <div>Login</div>
 <div className="flex items-center justify-center w-8" onClick={()=>{setisopen(!isopen)} } >
 { isopen? 

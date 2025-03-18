@@ -336,14 +336,14 @@ if (Card.pc === undefined || Card.pc === null) {
 return <div className=" hover:scale-105 transition-transform duration-300  p-6 rounded-lg border-white border-2 flex flex-col space-y-4 md:space-y-8   text-white font-satoshi justify-center items-center ">
 <div><img src={`https://financialmodelingprep.com/image-stock/${symbol}.png`} className="w-10 h-10" alt="" /></div>
 
-<div className=" flex space-x-2  items-center justify-center"> <h1> Current: ${Card.c ?? "N/A"}  </h1>
+<div className=" text-sm  md:text-lg  flex space-x-2  items-center justify-center"> <h1> Current: ${Card.c ?? "N/A"}  </h1>
                                     <img 
                     className="w-4 h-4 "
                       src={Card.c > Card.pc ? "/images/up.png" : "/images/down.png"} 
                       alt="Stock Trend" 
                     />  </div>
-<div className="">Previous Close: ${Card.pc ?? "N/A"}</div>
-<div className={` ${Card.c>Card.pc?"text-green-500":"text-red-500"
+<div className="text-sm  md:text-lg ">Previous Close: ${Card.pc ?? "N/A"}</div>
+<div className={` text-sm  md:text-lg  ${Card.c>Card.pc?"text-green-500":"text-red-500"
 } ` } >Change: {Card.dp ? `${Card.dp}%` : "N/A"}</div>
 
 <div className=" flex items-center justify-center space-x-4 ">
