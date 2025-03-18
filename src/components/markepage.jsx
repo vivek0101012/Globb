@@ -4,20 +4,26 @@ import { useEffect, useState } from "react";
 import { data, Link } from "react-router-dom";
 
 export  default function  Market(){
-  const [count,setcount]=useState(0);
+
+
+
+  let count=0;
 
     const stockSymbols = [
-        "AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "META", "BRK.B", "JPM", "V",
-        "JNJ", "UNH", "XOM", "PG", "HD", "MA", "CVX", "ABBV", "PFE", "KO",
-        "PEP", "COST", "ADBE", "MRK", "NFLX", "DIS", "CSCO", "INTC", "VZ", "T",
-        "WMT", "NKE", "LLY", "MCD", "ORCL", "AMD", "BAC", "TMO", "PM", "HON",
-        "IBM", "ABT", "ACN", "TXN", "AVGO", "QCOM", "LIN", "UNP", "GS", "NOW",
-        "BMY", "C", "BLK", "PYPL", "ISRG", "RTX", "LMT", "SPGI", "CAT", "MDT",
-        "MO", "DE", "ADI", "DUK", "AMAT", "TGT", "SCHW", "DHR", "LOW", "SO",
-        "APD", "CB", "MMC", "PGR", "CI", "ADP", "PLD", "HUM", "CME", "NEE",
-        "TJX", "VRTX", "REGN", "LRCX", "ROP", "MS", "USB", "ELV", "AON", "CL",
-        "ECL", "D", "BSX", "GILD", "GM", "FDX", "SYK", "MU", "EQIX", "FISV",
-        "WM", "IDXX", "ITW", "EW", "ZTS", "SYY", "MCO", "SHW"
+      
+      "AAPL", "MSFT", "AMZN", "GOOGL", "TSLA", "META", "NVDA", "BRK.B", "JNJ", "JPM",
+      "V", "PG", "UNH", "HD", "MA", "PFE", "KO", "DIS", "NFLX", "CRM",
+      "INTC", "PYPL", "ABBV", "CSCO", "NKE", "XOM", "WMT", "AMD", "BA", "IBM",
+      "PEP", "T", "VZ", "MRK", "ORCL", "CAT", "CVX", "LLY", "COST", "UPS",
+      "HON", "TMO", "MDT", "BMY", "DHR", "LIN", "UNP", "GS", "RTX", "ADP",
+      "ELV", "SPGI", "ZTS", "AMGN", "C", "ABT", "CB", "MO", "PLD", "DE",
+      "AMT", "SCHW", "USB", "SO", "MMC", "TXN", "BKNG", "PGR", "LOW", "GE",
+      "BSX", "GILD", "LMT", "FIS", "ADI", "DUOL", "ATVI", "ITW", "MCD", "MAR",
+      "MS", "AXP", "SYK", "INTU", "TJX", "REGN", "CME", "WM", "CCI", "F",
+      "HUM"
+  
+
+
       ];
       
       const [sym,setsym]=useState(stockSymbols.slice(0,19))
@@ -96,7 +102,7 @@ useEffect( ()=>{
 
  if(currentindex+9<=stockSymbols.length){ 
   
-  setTimeout(() => {
+  {
     {setsym((prev)=>{
 
       const newarr= stockSymbols.slice(currentindex ,currentindex+9 );
@@ -105,7 +111,7 @@ useEffect( ()=>{
        }
       )}
     
-  }, 0);
+  };
   
 }
 
@@ -211,7 +217,7 @@ useEffect( ()=>{
 {
   sym.map((e,index)=>(
 
-<Stockcard key={index}  count={count} setcount={setcount} symbol={e}></Stockcard>
+<Stockcard key={index}  count={index % 9}  symbol={e}></Stockcard>
 
 
 
@@ -243,7 +249,7 @@ useEffect( ()=>{
 
 }
 
-export function Stockcard({symbol,count,setcount}){
+export function Stockcard({symbol,count}){
     const apiKey = "cv9fb89r01qkfpsjhdj0cv9fb89r01qkfpsjhdjg";
 
 
@@ -278,9 +284,16 @@ const [Card,setcard]=useState({})
 
 // if(count==keys.length){ count=0;}
 
+
 useEffect (()=>{
 
+
+
+
 const asynfn= async ()=>{
+
+
+
 
 
     const res= await  fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${keys[count]}`)
@@ -289,14 +302,23 @@ const asynfn= async ()=>{
     setcard(data)
 
 
+console.log( count)
 
 
-    setcount ((prev)=>{ (prev+1)%(keys.length-1)})
 
 
 
 }
-asynfn();
+
+
+
+{
+  asynfn();
+};
+
+
+
+
 
 
 } ,[symbol] )
