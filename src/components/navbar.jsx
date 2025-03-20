@@ -9,10 +9,10 @@ return <div className=" w-full p-1 flex flex-col justify-center items-center  fo
 
 <div className=" w-full p-10 flex  justify-center font-satoshi text-white text-opacity-50 text-sm font-extralight space-x-2">
 
+
 <div className="  bg-gradient-to-br from-[#171F2E]/30 to-[#0A1E42]/30 backdrop-blur-lg border-[0.25px] border-white/10  text-white shadow-lg  rounded-full p-2  flex justify-center items-center space-x-4 px-6 ">
+<Link to={"/"}> <img src="/images/logo.png" className="h-[24px] " alt="" /></Link>
 
-
-<img src="/images/logo.png" className="h-[24px] " alt="" />
 
 <div className=" active:scale-90"> Globb </div>
 

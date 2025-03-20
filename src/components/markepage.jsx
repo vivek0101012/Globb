@@ -2,7 +2,8 @@
 import { use } from "react";
 import { useEffect, useState } from "react";
 import { data, Link } from "react-router-dom";
-
+import Loader from "./loader";
+import YouTube from "./skeleton";
 export  default function  Market(){
 
 
@@ -35,11 +36,11 @@ let currentindex=20;
       
       const [querym, setQuerym] = useState("");
     
-
+const [isloading ,setloading]=useState(false)
 
     //   const [name,setname]=useState("");
 
-    //   useEffect(()=>{
+    //   useEffect(()=>{fakff
       
     //   const fn= async ()=>{
       
@@ -103,13 +104,25 @@ useEffect( ()=>{
  if(currentindex+9<=stockSymbols.length){ 
   
   {
-    {setsym((prev)=>{
 
-      const newarr= stockSymbols.slice(currentindex ,currentindex+9 );
-      currentindex+=9;
-          return    [...prev,...newarr]
-       }
-      )}
+    setloading(true)
+setTimeout(() => {
+  
+
+
+  {setsym((prev)=>{
+
+    const newarr= stockSymbols.slice(currentindex ,currentindex+9 );
+    currentindex+=9;
+        return    [...prev,...newarr]
+     }
+    )}
+
+
+    setloading (false)
+}, 1000);
+
+    
     
   };
   
@@ -211,13 +224,13 @@ useEffect( ()=>{
 
 
 
- <div className="grid md:grid-cols-4  grid-cols-1 justify-center gap-10 ">
+ <div className="grid md:grid-cols-4  transition-transform duration-300  grid-cols-1 justify-center gap-10 ">
 
 
 {
   sym.map((e,index)=>(
 
-<Stockcard key={index}  count={index % 9}  symbol={e}></Stockcard>
+<Stockcard key={index} isloading={isloading}  count={index % 9}  symbol={e}></Stockcard>
 
 
 
@@ -228,7 +241,17 @@ useEffect( ()=>{
 
 }
 
+
+{
+
+
+}
+
 </div>
+
+
+
+
 
 
     </div>
@@ -249,8 +272,7 @@ useEffect( ()=>{
 
 }
 
-export function Stockcard({symbol,count}){
-    const apiKey = "cv9fb89r01qkfpsjhdj0cv9fb89r01qkfpsjhdjg";
+export function Stockcard({symbol,count ,isloading}){
 
 
     const keys=[ 
@@ -333,7 +355,8 @@ if (Card.pc === undefined || Card.pc === null) {
 
 
 
-return <div className=" hover:scale-105 transition-transform duration-300  p-6 rounded-lg border-white border-2 flex flex-col space-y-4 md:space-y-8   text-white font-satoshi justify-center items-center ">
+return ( isloading ?( <YouTube/>):
+  (<div className=" hover:scale-105 transition-transform duration-300  p-6 rounded-lg border-white border-2 flex flex-col space-y-4 md:space-y-8   text-white font-satoshi justify-center items-center ">
 <div><img src={`https://financialmodelingprep.com/image-stock/${symbol}.png`} className="w-10 h-10" alt="" /></div>
 
 <div className=" text-sm  md:text-lg  flex space-x-2  items-center justify-center"> <h1> Current: ${Card.c ?? "N/A"}  </h1>
@@ -352,12 +375,17 @@ return <div className=" hover:scale-105 transition-transform duration-300  p-6 r
 </div>
 
 
-</div>
+
+</div>)
+
+
+
+
+
+)
+
 
 }
-
-
-
 
 
 

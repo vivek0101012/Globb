@@ -1,10 +1,18 @@
+
+import { lazy,Suspense } from "react"
+
+
+const Market=  lazy (()=> import ('./components/markepage') )
 import Footer from "./components/footer"
 import Home from "./components/home"
-import Market from "./components/markepage"
+// import Market from "./components/markepage"
 import Marketupdate from "./components/marketupdate"
 import Navbar from "./components/navbar"
 import Portfolio from "./components/portfoliopage"
 import Testimonials from "./components/testimonials"
+ 
+import Loader from "./components/loader"
+
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 
@@ -19,7 +27,17 @@ function App(){
 
 <Route path="/" element={<> <Home /> <Marketupdate /> <Testimonials /> </> } />
 
-<Route path="/market" element={<Market />} />
+
+
+<Route path="/market" element={
+  <Suspense fallback={<Loader></Loader> }>
+
+<Market />
+
+  </Suspense>
+  
+} />
+
 <Route path="/portfolio" element={<Portfolio />} />
 </Routes>
 
