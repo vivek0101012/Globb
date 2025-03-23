@@ -1,11 +1,13 @@
 
-import { use } from "react";
 import { useEffect, useState } from "react";
-import { data, Link } from "react-router-dom";
-import Loader from "./loader";
 import YouTube from "./skeleton";
+import { StockContext } from "../context/Stocklistcontext";
+import { useContext } from "react";
+import { StockProvider } from "../context/Stocklistcontext";
+
 export  default function  Market(){
 
+  const {  addstocks, removestocks, decreasecount } = useContext(StockContext);
 
 
   let count=0;
@@ -101,7 +103,7 @@ useEffect( ()=>{
 
     const handlescroll =()=>{   if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 10){
 
- if(currentindex+9<=stockSymbols.length){ 
+ if(currentindex+19<=stockSymbols.length){ 
   
   {
 
@@ -113,7 +115,7 @@ setTimeout(() => {
   {setsym((prev)=>{
 
     const newarr= stockSymbols.slice(currentindex ,currentindex+9 );
-    currentindex+=9;
+    currentindex+=19;
         return    [...prev,...newarr]
      }
     )}
@@ -274,6 +276,7 @@ setTimeout(() => {
 
 export function Stockcard({symbol,count ,isloading}){
 
+  const {  addstocks, removestocks, decreasecount } = useContext(StockContext);
 
     const keys=[ 
 
@@ -304,7 +307,6 @@ export function Stockcard({symbol,count ,isloading}){
 const [Card,setcard]=useState({})
 
 
-// if(count==keys.length){ count=0;}
 
 
 useEffect (()=>{
@@ -324,7 +326,6 @@ const asynfn= async ()=>{
     setcard(data)
 
 
-console.log( count)
 
 
 
@@ -355,8 +356,8 @@ if (Card.pc === undefined || Card.pc === null) {
 
 
 
-return ( isloading ?( <YouTube/>):
-  (<div className=" hover:scale-105 transition-transform duration-300  p-6 rounded-lg border-white border-2 flex flex-col space-y-4 md:space-y-8   text-white font-satoshi justify-center items-center ">
+return  ( isloading ?( <YouTube/>):
+  (<div className="  bg-[#1F2937] hover:scale-105 transition-transform duration-300  p-6 rounded-lg border-slate-500 border-2 flex flex-col space-y-4 md:space-y-8   text-white font-satoshi justify-center items-center ">
 <div><img src={`https://financialmodelingprep.com/image-stock/${symbol}.png`} className="w-10 h-10" alt="" /></div>
 
 <div className=" text-sm  md:text-lg  flex space-x-2  items-center justify-center"> <h1> Current: ${Card.c ?? "N/A"}  </h1>
@@ -370,8 +371,15 @@ return ( isloading ?( <YouTube/>):
 } ` } >Change: {Card.dp ? `${Card.dp}%` : "N/A"}</div>
 
 <div className=" flex items-center justify-center space-x-4 ">
-    <button className= {`px-4 py-2 hover:bg-green-400 transition-all duration-300 text-center rounded-xl active:scale-95  bg-green-600 ${Card.c>Card.pc?"animate-pulse":"" }` }>  Buy</button>
-    <button className=  {`px-4 hover:bg-red-400 transition-all duration-300 py-2 text-center rounded-xl active:scale-95  bg-red-600 ${Card.pc>Card.c?"animate-pulse":"" }` }>  Sell</button>
+    <button className= {`px-4 py-2 hover:bg-green-400 transition-all duration-300 text-center rounded-xl active:scale-95  bg-green-600 ${Card.c>Card.pc?"animate-pulse":"" }`   } 
+    
+    onClick={  ()=>{ addstocks( {title: symbol}) } }
+    >  Buy</button>
+    <button className=  {`px-4 hover:bg-red-400 transition-all duration-300 py-2 text-center rounded-xl active:scale-95  bg-red-600 ${Card.pc>Card.c?"animate-pulse":"" }` }
+    
+    onClick={  ()=>{ decreasecount( {title: symbol} ) } }
+
+    >  Sell</button>
 </div>
 
 

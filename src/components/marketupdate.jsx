@@ -44,7 +44,7 @@ return <div className=" py-16 text-white font-satoshi mt-[-40px]">
 
     <div className=" text-3xl  text-wrap "> Market <span className=" text-blue-600"> Overview</span> </div>
 
-<div className=" w-11/12  rounded-full  p-4 space-y-4">
+<div className=" w-11/12 isolate rounded-xl bg-white/5 shadow-lg ring-1 ring-black/5 rounded-full  p-4 space-y-4">
 <div className="overflow-x-auto ml-4 px-4 no-scrollbar  mt-8">
         <table className="min-w-full  border-collapse border-y-2 border-gray-500 border-opacity-40 table-auto">
       

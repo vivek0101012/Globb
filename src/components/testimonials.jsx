@@ -51,7 +51,7 @@ export default function Testimonials() {
 
 
   return (
-    <div className="text-white flex flex-col wmt-10 items-center justify-center font-playfair">
+    <div className="text-white bg-[#18202F] flex flex-col wmt-10 items-center justify-center font-playfair">
       <h2 className="text-center mt-8 text-lg font-semibold text-blue-500 ">TESTIMONIALS</h2>
       <h1 className="text-center md:text-3xl text-2xl text-white font-semibold">
         What our Customers say...
@@ -85,7 +85,7 @@ export function Card({reviews}){
 
   // eslint-disable-next-line react/prop-types
   const { image, name, review ,stars} = reviews;
- return <div className="   rounded-md h-[300px] border-2 border-gray-600 min-w-[250px]  flex flex-col shadow-lg py-2 px-4  space-y-2   " >
+ return <div className="  bg-[#1F2937]  rounded-md h-[300px] border-2 border-gray-600 min-w-[250px]  flex flex-col shadow-lg py-2 px-4  space-y-2   " >
 
 <div className=" w-full flex items-center justify-center">
 
@@ -134,7 +134,7 @@ return <div className="flex flex-row items-center justify-center space-x-3">
 
 {
     arr.map((e,id)=>(
-    <div key={id}>
+    <div key={id} className=" ">
 <img src="/images/rating.png" width={20} alt="" />
         </div>
     ))

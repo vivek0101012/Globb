@@ -10,7 +10,7 @@ import Marketupdate from "./components/marketupdate"
 import Navbar from "./components/navbar"
 import Portfolio from "./components/portfoliopage"
 import Testimonials from "./components/testimonials"
- 
+ import { StockProvider } from "./context/Stocklistcontext"
 import Loader from "./components/loader"
 
 
@@ -20,6 +20,7 @@ function App(){
 
   return <div className=" font-lemonMilk w-full min-h-screen bg-[#080E1A]">
 
+<StockProvider>
 <Router>
 <Navbar></Navbar> 
 <Routes>
@@ -46,6 +47,8 @@ function App(){
 </Router>
 
 <Footer></Footer>
+</StockProvider>
+
 
   </div>
 
