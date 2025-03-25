@@ -89,10 +89,13 @@ return <div className=" py-8  text-white items-center w-full flex flex-col">
 
 
 
-<div className=" w-full  text-sm rounded-full ">
-<div className="overflow-x-auto  px-4 no-scrollbar w-full mt-">
+<div className=" w-full   text-sm rounded-full ">
+
+
+
+<div className="overflow-x-auto   max-h-[320px] overflow-scroll px-4 no-scrollbar w-full mt-">
         <table className="min-w-full rounded-xl   border-gray-500 border-opacity-40 table-auto">
-      
+
           <tbody>
             {stocks.map((e, index) => 
 
@@ -168,7 +171,7 @@ loaddata()
 
 
 console.log(data)
-return   <tr className="md:w-full text-[9px] md:text-sm">
+return   <tr className="md:w-full z-10 text-[9px] md:text-sm">
               
 <td className="px-4 py-2  border-b-2 border-opacity-40  border-gray-500 border-opacity-4   ">
     <div className=" flex justify-center items-center space-x-5 md:space-x-10">

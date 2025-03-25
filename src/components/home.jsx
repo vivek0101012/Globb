@@ -1,5 +1,11 @@
 
 
+
+import React from 'react';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+
+
+
 export default function Home(){
 
 return <div className=" py-10  mt-[-10] flex justify-center ">
@@ -23,9 +29,19 @@ return <div className=" py-10  mt-[-10] flex justify-center ">
 <div className=" md:text-3xl text-lg  text-wrap "> Trade without limits, learn without risks.<br/>  <span className=" sm:text-sm opacity-75 ">real-time, and 100% educational.</span> </div>
 
 
-<div className="py-2 px-4 animate-bounce flex justify-center  active:scale-90 border-[0.25px]  border-[#90AFEE] opacity-80 shadow-inner shadow-[#90AFEE] rounded-full  " >
-    Get Started 
+<div className=" flex flex-row items-center justify-center p-4 space-x-4">
+
+<div className="py-2 px-4 animate-bounce flex flex-row  justify-center  active:scale-90 border-[0.25px]  border-[#90AFEE] opacity-80 shadow-inner shadow-[#90AFEE] rounded-full  " >
+Get Started 
 </div>
+
+
+
+
+
+</div>
+
+
 {/* <div className=" bg-none absolute x-[-200px] y  "  >
 <img src="images/homebg.gif"  className="w-[200px] h-[500px]" /> */}
 
