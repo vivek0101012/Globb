@@ -1,5 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
+import { motion } from "framer-motion";
+
+
+
 const testimonials = [
     {
         image: "https://i.ibb.co/GQk9QYNj/1.jpg",
@@ -85,7 +89,15 @@ export function Card({reviews}){
 
   // eslint-disable-next-line react/prop-types
   const { image, name, review ,stars} = reviews;
- return <div className="  bg-[#1F2937]  rounded-md h-[300px] border-2 border-gray-600 min-w-[250px]  flex flex-col shadow-lg py-2 px-4  space-y-2   " >
+ return <motion.div className="  bg-[#1F2937]  rounded-md h-[300px] border-2 border-gray-600 min-w-[250px]  flex flex-col shadow-lg py-2 px-4  space-y-2   "
+ 
+ initial={{ opacity: 0, y: 40 }}
+ whileInView={{ opacity: 1, y: 0 }}
+ transition={{ duration: 0.5, ease: 'easeOut' }}
+ viewport={{ once:false, amount: 0.2 }}
+ 
+ 
+ >
 
 <div className=" w-full flex items-center justify-center">
 
@@ -119,7 +131,7 @@ export function Card({reviews}){
  
 
 
-        </div>
+        </motion.div>
 }
 
 

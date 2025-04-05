@@ -4,6 +4,7 @@ import YouTube from "./skeleton";
 import { StockContext } from "../context/Stocklistcontext";
 import { useContext } from "react";
 import { StockProvider } from "../context/Stocklistcontext";
+import { motion } from "framer-motion";
 
 export  default function  Market(){
 
@@ -357,7 +358,23 @@ if (Card.pc === undefined || Card.pc === null) {
 
 
 return  ( isloading ?( <YouTube/>):
-  (<div className="  bg-[#1F2937] hover:scale-105 transition-transform duration-300  p-6 rounded-lg border-slate-500 border-2 flex flex-col space-y-4 md:space-y-8   text-white font-satoshi justify-center items-center ">
+  (<motion.div className="  bg-gradient-to-br from-white/10 to-white/5
+  backdrop-blur-md
+  hover:scale-105 
+  transition-transform duration-300  
+  p-6 rounded-lg 
+  border border-white/10
+  shadow-md shadow-white/10
+  flex flex-col space-y-4 md:space-y-8   
+  text-white font-satoshi 
+  justify-center items-center"
+  
+    initial={{ opacity: 0, y: 40 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, ease: 'easeOut' }}
+    viewport={{ once:false, amount: 0.2 }}
+  
+  >
 <div><img src={`https://financialmodelingprep.com/image-stock/${symbol}.png`} className="w-10 h-10" alt="" /></div>
 
 <div className=" text-sm  md:text-lg  flex space-x-2  items-center justify-center"> <h1> Current: ${Card.c ?? "N/A"}  </h1>
@@ -384,7 +401,7 @@ return  ( isloading ?( <YouTube/>):
 
 
 
-</div>)
+</motion.div>)
 
 
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-
+import { motion } from "framer-motion";
 export default function Marketupdate(){
 const prices=[
     "AAPL",  
@@ -38,8 +38,22 @@ fetchdata();
   },[])
   
 
-return <div className=" py-16 text-white font-satoshi mt-[-40px]">
-    <div className="flex flex-col space-y-8  ustify-center items-center ">
+return <motion.div className=" py-16 text-white font-satoshi mt-[-40px]"
+
+initial={{ opacity: 0, y:60 }}
+whileInView={{ opacity: 1, y: 0 }}
+transition={{ duration: 0.5, e1ase: 'easeOut' }}
+viewport={{ once: false, amount: 0.5 }}
+
+>
+    <div className="flex flex-col space-y-8  ustify-center items-center "
+    
+    
+ 
+    
+    >
+
+
 
 
     <div className=" text-3xl  text-wrap "> Market <span className=" text-blue-600"> Overview</span> </div>
@@ -60,8 +74,8 @@ return <div className=" py-16 text-white font-satoshi mt-[-40px]">
                     
                     
                                     <img 
-                    className="w-8 md:h-8 h-4 "
-                      src={e.c > e.pc ? "/images/up.png" : "/images/down.png"} 
+                    className="w-8 md:h-8 h-8 "
+                      src={e.c > e.pc ? "/images/up-a.png" : "/images/down.png"} 
                       alt="Stock Trend" 
                     />
                     </div>
@@ -88,7 +102,7 @@ return <div className=" py-16 text-white font-satoshi mt-[-40px]">
 
     </div>
 
-</div>
+</motion.div>
 
 
 }

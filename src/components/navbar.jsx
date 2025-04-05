@@ -1,6 +1,23 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { motion } from "framer-motion";
+import { useRef } from "react";
+import { Link } from "react-router-dom";
+
+
+
+
 export default function  Navbar(){
+  const itemRefs = useRef([]);
+ 
+  const [shadowProps, setShadowProps] = useState({ x:20, width: 68 });
+
+  const navLinks = [
+    { to: "/", label: "Home" },
+    { to: "/market", label: "Market" },
+    { to: "/portfolio", label: "Portfolio" },
+
+  ];
+  const [clickid,setclickid]=useState(0);
 
 const [isopen,setisopen ]=useState(false);
 
@@ -29,15 +46,67 @@ return <div className=" w-full p-1 flex flex-col justify-center items-center  fo
 </div>
 
 
-<div className=" hidden bg-gradient-to-br font-thin from-[#171F2E]/30 to-[#0A1E42]/30 backdrop-blur-lg border border-white/10  text-white shadow-lg rounded-full md:flex justify-center p-2 space-x-8">
+<div 
 
-<div className=" flex justify-center space-x-6 px-4 items-center">  
 
-<Link to="/"><div className=" active:scale-90">Home</div></Link>
+className=" relative hidden bg-gradient-to-br font-thin from-[#171F2E]/30 to-[#0A1E42]/30 backdrop-blur-lg border border-white/10  text-white shadow-lg rounded-full md:flex justify-center p-2 space-x-8">
 
-<Link to="/market"><div className=" active:scale-90">Market</div></Link>
-<Link to="/portfolio"><div className=" active:scale-90">Portfolio</div></Link>
-<Link to="/trade"><div className=" active:scale-90">Trade</div></Link>
+
+<Hover x={shadowProps.x} width={shadowProps.width}   />
+
+
+
+
+<div className="  flex justify-center space-x-6 px-4 items-center">  
+
+
+{
+  navLinks.map((e,i)=>(
+    <div
+    key={i}
+    ref={(el)=>{itemRefs.current[i]=el}  }
+
+onMouseEnter={ ()=>{
+const el= itemRefs.current[i];
+if(el){
+  const x = el.offsetLeft-40;
+  const width = el.offsetWidth;
+  setShadowProps({ x, width });
+}
+
+}}
+
+onClick={ ()=>{
+  setclickid(i);
+}}
+
+
+onMouseLeave={ ()=>{
+
+  const el= itemRefs.current[clickid];
+  
+
+  const x = el.offsetLeft-40;
+  const width = el.offsetWidth;
+  setShadowProps({ x, width });
+
+
+}}
+
+
+
+    className="relative z-10 px-4 py-1 text-white/70 hover:text-white cursor-pointer transition-all"
+  >
+    <Navitem to={e.to} label={e.label} />
+  </div>
+  ))
+}
+
+
+
+
+
+
 
 
 </div>
@@ -114,6 +183,82 @@ return <div className=" w-9/12 bg-gradient-to-br font-thin from-[#171F2E]/30 to-
 <div className="py-2 px-4  flex justify-center items-center active:scale-90 border-[0.25px]  border-[#90AFEE] opacity-80 shadow-inner  shadow-sm shadow-[#90AFEE] rounded-full  " >signin</div>
 
 </div>
+
+
+}
+
+
+
+
+export function Navitem({to,label}){
+
+
+  
+
+return <Link to={to}>
+
+<div
+   
+  
+ className="z-10"
+
+>
+
+
+
+
+
+{label}
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+</Link>
+
+
+
+
+
+}
+
+
+
+
+export function Hover( {x,width}){ 
+
+return  (<motion.div  className=" h-8 w-[32px] z-0 absolute  top-1/4 left-10
+
+
+rounded-2xl
+  rounded-2xl
+  bg-gradient-to-br from-blue-500/20 to-blue-700/20
+  shadow-xl shadow-blue-600/20
+  backdrop-blur-sm
+  border border-blue-400/30
+   
+"
+
+
+
+      animate={{ x, width }}
+      transition={{ type: "spring", stiffness: 600, damping: 50 }}
+
+
+>
+
+
+
+
+</motion.div>)
 
 
 }
