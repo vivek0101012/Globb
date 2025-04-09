@@ -75,7 +75,7 @@ viewport={{ once: false, amount: 0.5 }}
                     
                                     <img 
                     className="w-8 md:h-8 h-8 "
-                      src={e.c > e.pc ? "/images/up-a.png" : "/images/down.png"} 
+                      src={e.c > e.pc ? "/images/up.png" : "/images/down.png"} 
                       alt="Stock Trend" 
                     />
                     </div>
