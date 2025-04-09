@@ -32,9 +32,18 @@ return <div className=" w-full p-1 flex flex-col justify-center items-center  fo
 
 
 
-<Link to={"/"}>
+<Link to={"/"}  >
 
-<div className=" flex justify-center items-center space-x-4 px-6   ">
+<div className=" flex justify-center items-center space-x-4 px-6   "
+
+onClick={ ()=> {setclickid(0);
+
+  console.log(clickid)
+}
+
+
+}
+>
 <img src="/images/logo.png" className="md:h-[24px] h-4 " alt="" />
 
 

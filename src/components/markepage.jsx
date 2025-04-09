@@ -278,33 +278,8 @@ setTimeout(() => {
 export function Stockcard({symbol,count ,isloading}){
 
   const {  addstocks, removestocks, decreasecount } = useContext(StockContext);
+  const keys = JSON.parse(import.meta.env.VITE_API_KEYS || "[]");
 
-    const keys=[ 
-
-"cvbhj19r01qob7udmbdgcvbhj19r01qob7udmbe0"
-,
-
- "cv9fb89r01qkfpsjhdj0cv9fb89r01qkfpsjhdjg"
-
- ,
-
- "cvbhjgpr01qob7udmeggcvbhjgpr01qob7udmeh0"
- ,
-
- "cvbhjopr01qob7udmg80cvbhjopr01qob7udmg8g"
- ,
- "cvbhjv9r01qob7udmhe0cvbhjv9r01qob7udmheg"
- ,
-
-"cvbhk91r01qob7udmjb0cvbhk91r01qob7udmjbg"
-,
-"cvbhkfhr01qob7udmkggcvbhkfhr01qob7udmkh0"
-,
-"cvbhkn1r01qob7udmlr0cvbhkn1r01qob7udmlrg"
-,
-"cvbhlj9r01qob7udmqhgcvbhlj9r01qob7udmqi0"
-
-    ]
 const [Card,setcard]=useState({})
 
 
