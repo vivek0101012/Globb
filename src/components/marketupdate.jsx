@@ -7,8 +7,9 @@ const prices=[
     "GOOGL", 
     "AMZN", "TSLA"
   ]
-  const apiKey = "cv9fb89r01qkfpsjhdj0cv9fb89r01qkfpsjhdjg";
-
+  
+  const apikeys = JSON.parse(import.meta.env.VITE_API_KEYS || "[]");
+  const apiKey=apikeys[Math.floor(Math.random() * 9)];
   const [det,setdetails]=useState([])
   
 

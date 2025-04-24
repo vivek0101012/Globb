@@ -15,6 +15,8 @@ import Loader from "./components/loader"
 
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import Courses from "./components/courses"
+
 
 function App(){
 
@@ -26,7 +28,7 @@ function App(){
 <Routes>
 
 
-<Route path="/" element={<> <Home /> <Marketupdate /> <Testimonials /> </> } />
+<Route path="/" element={<> <Home /> <Marketupdate />   <Courses/>  <Testimonials /> </> } />
 
 
 
