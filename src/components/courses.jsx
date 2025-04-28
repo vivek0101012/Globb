@@ -61,10 +61,10 @@ export default function Courses(){
      <motion.div className="py-16 w-full  "
      
      
-     initial={{ opacity: 0, y:60 }}
-whileInView={{ opacity: 1, y: 60 }}
-transition={{ duration: 3, ease: 'easeOut' }}
-viewport={{ once: false, amount: 0.5 }}
+     initial={{ opacity: 0 }}
+     whileInView={{ opacity: 1 }}
+     transition={{ duration: 1 }}
+     viewport={{ once: true }}
      >
 
 <h1 className=" text-center text-white mb-4 md:text-2xl"> ONLINE <span className="text-blue-600"> TRADING COURSES</span> </h1>

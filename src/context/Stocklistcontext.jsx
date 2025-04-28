@@ -9,6 +9,11 @@ export function  StockProvider ({children}){
 
 
     const [stocks,setstocks]=useState([]);
+const [Balance ,setBalance]=useState(1000000);
+const changeBalance =(e)=>{
+    setBalance( (prev)=> prev+e);
+
+}
 
     const addstocks =( element)=>{
 
@@ -54,7 +59,7 @@ setstocks ( (prev)=>{
 
 
 
-return <StockContext.Provider value={{stocks,decreasecount,removestocks,addstocks}   } >
+return <StockContext.Provider value={{stocks,decreasecount,removestocks,changeBalance,Balance,setBalance,addstocks}   } >
 
 {children}
 

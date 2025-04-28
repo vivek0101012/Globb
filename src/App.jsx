@@ -8,7 +8,6 @@ import Home from "./components/home"
 // import Market from "./components/markepage"
 import Marketupdate from "./components/marketupdate"
 import Navbar from "./components/navbar"
-import Portfolio from "./components/portfoliopage"
 import Testimonials from "./components/testimonials"
  import { StockProvider } from "./context/Stocklistcontext"
 import Loader from "./components/loader"
@@ -16,6 +15,7 @@ import Loader from "./components/loader"
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Courses from "./components/courses"
+import Portfolio2 from "./components/portfolio2"
 
 
 function App(){
@@ -41,7 +41,7 @@ function App(){
   
 } />
 
-<Route path="/portfolio" element={<Portfolio />} />
+<Route path="/portfolio" element={<Portfolio2 />} />
 </Routes>
 
 

@@ -3,15 +3,13 @@ import { useEffect, useState } from "react";
 import YouTube from "./skeleton";
 import { StockContext } from "../context/Stocklistcontext";
 import { useContext } from "react";
-import { StockProvider } from "../context/Stocklistcontext";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export  default function  Market(){
 
-  const {  addstocks, removestocks, decreasecount } = useContext(StockContext);
+  const {  addstocks, removestocks, decreasecount,changeBalance } = useContext(StockContext);
 
 
-  let count=0;
 
     const stockSymbols = [
       
@@ -148,117 +146,121 @@ setTimeout(() => {
 
 
 
-    return <div className=" z-0 w-full  flex flex-col space-y-28 items-center text-white  justify-center">
-
-
-
-
-
-      <div className=" w-full ">
-
-<div className="flex justify-center items-center gap-2 p-4">
-  <div className="relative w-full max-w-md">
-    <input
-      type="text"
-      value={query}
-      onChange={(e) => setQuery(e.target.value)}
-      placeholder="Enter NASDAQ ticker (e.g., AAPL, MSFT)"
-      className="w-full p-3 pl-5 border border-gray-600 rounded-full 
-                 bg-[#1E293B] text-white placeholder-gray-400 shadow-md
-                 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
-    />
-    <button
-      className="absolute right-1 top-1/2 -translate-y-1/2 px-5 py-2 
-                 bg-blue-600 hover:bg-blue-700 active:scale-95 
-                 text-white font-semibold rounded-full shadow-md 
-                 transition-all duration-200"
-      onClick={add}
-    >
-      Search
-    </button>
-  </div>
-</div>
-
-
-
-
-</div>
-
-
-{ 
-
-
-
-
-
-
-(isopen ? <div className=" p-6 rounded-lg border-white border-2 flex flex-col space-y-4 md:space-y-6   text-white font-satoshi justify-center items-center">
-
-<div className="w-full flex justify-end " onClick={()=>{ setisopen(!isopen)}}>      <img src="/images/close.png " className="active:scale-95" width={20}  alt="" />  </div>
-
-<div><img src={`https://financialmodelingprep.com/image-stock/${querym}.png`} className="w-10" alt="" /></div>
-<div className=" flex space-x-2  items-center justify-center"> <h1> Current: ${Card.c ?? "N/A"}  </h1>
-                                    <img 
-                    className="w-4 h-4 "
-                      src={Card.c > Card.pc ? "/images/up.png" : "/images/down.png"} 
-                      alt="Stock Trend" 
-                    />  </div>
-<div className="">Previous Close: ${Card.pc ?? "N/A"}</div>
-<div className={` ${Card.c>Card.pc?"text-green-500":"text-red-500"
-} ` } >Change: {Card.dp ? `${Card.dp}%` : "N/A"}</div>
-
-<div className=" flex items-center justify-center space-x-4 ">
-    <button className= {`px-4 py-2 text-center rounded-xl active:scale-95  bg-green-500 ${Card.c>Card.pc?"animate-pulse":"" }` }>  Buy</button>
-    <button className=  {`px-4 py-2 text-center rounded-xl active:scale-95  bg-red-500 ${Card.pc>Card.c?"animate-pulse":"" }` }>  Sell</button>
-</div>
-
-
-</div>:<></> )
-
-
-
-}
-
-
-
-<div className=" md:text-3xl text-2xl font-semibold">
-  Market <span className="text-blue-500 drop-shadow-[0_0_10px_#3b82f6] shadow-sm hover:drop-shadow-[0_0_20px_#3b82f6]">Insight</span>
-</div>
-
-
-
- <div className="grid md:grid-cols-4  transition-transform duration-300  grid-cols-1 justify-center gap-10 ">
-
-
-{
-  sym.map((e,index)=>(
-
-<Stockcard key={index} isloading={isloading}  count={index % 9}  symbol={e}></Stockcard>
-
-
-
-  ))
-
+    return <AnimatePresence>{<motion.div className=" z-0 w-full  flex flex-col space-y-28 items-center text-white  justify-center"
     
-        
-
-}
-
-
-{
-
-
-}
-
-</div>
-
-
-
-
-
-
+      layout
+      
+      >
+  
+  
+  
+  
+  
+        <div className=" w-full ">
+  
+  <div className="flex justify-center items-center gap-2 p-4">
+    <div className="relative w-full max-w-md">
+      <input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Enter NASDAQ ticker (e.g., AAPL, MSFT)"
+        className="w-full p-3 pl-5 border border-gray-600 rounded-full 
+                   bg-[#1E293B] text-white placeholder-gray-400 shadow-md
+                   focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+      />
+      <button
+        className="absolute right-1 top-1/2 -translate-y-1/2 px-5 py-2 
+                   bg-blue-600 hover:bg-blue-700 active:scale-95 
+                   text-white font-semibold rounded-full shadow-md 
+                   transition-all duration-200"
+        onClick={add}
+      >
+        Search
+      </button>
     </div>
-
+  </div>
+  
+  
+  
+  
+  </div>
+  
+  
+  { 
+  
+  
+  
+  
+  
+  
+  (isopen ? <div className=" p-6 rounded-lg border-white border-2 flex flex-col space-y-4 md:space-y-6   text-white font-satoshi justify-center items-center">
+  
+  <div className="w-full flex justify-end " onClick={()=>{ setisopen(!isopen)}}>      <img src="/images/close.png " className="active:scale-95" width={20}  alt="" />  </div>
+  
+  <div><img src={`https://financialmodelingprep.com/image-stock/${querym}.png`} className="w-10" alt="" /></div>
+  <div className=" flex space-x-2  items-center justify-center"> <h1> Current: ${Card.c ?? "N/A"}  </h1>
+                                      <img 
+                      className="w-4 h-4 "
+                        src={Card.c > Card.pc ? "/images/up.png" : "/images/down.png"} 
+                        alt="Stock Trend" 
+                      />  </div>
+  <div className="">Previous Close: ${Card.pc ?? "N/A"}</div>
+  <div className={` ${Card.c>Card.pc?"text-green-500":"text-red-500"
+  } ` } >Change: {Card.dp ? `${Card.dp}%` : "N/A"}</div>
+  
+  <div className=" flex items-center justify-center space-x-4 ">
+      <button className= {`px-4 py-2 text-center rounded-xl active:scale-95  bg-green-500 ${Card.c>Card.pc?"animate-pulse":"" }` }>  Buy</button>
+      <button className=  {`px-4 py-2 text-center rounded-xl active:scale-95  bg-red-500 ${Card.pc>Card.c?"animate-pulse":"" }` }>  Sell</button>
+  </div>
+  
+  
+  </div>:<></> )
+  
+  
+  
+  }
+  
+  
+  
+  <div className=" md:text-3xl text-2xl font-semibold">
+    Market <span className="text-blue-500 drop-shadow-[0_0_10px_#3b82f6] shadow-sm hover:drop-shadow-[0_0_20px_#3b82f6]">Insight</span>
+  </div>
+  
+  
+  
+   <div className="grid md:grid-cols-4  transition-transform duration-300  grid-cols-1 justify-center gap-10 ">
+  
+  
+  {
+    sym.map((e,index)=>(
+  
+  <Stockcard key={index} isloading={isloading}  count={index % 9}  symbol={e}></Stockcard>
+  
+  
+  
+    ))
+  
+      
+          
+  
+  }
+  
+  
+  {
+  
+  
+  }
+  
+  </div>
+  
+  
+  
+  
+  
+  
+      </motion.div>
+  }</AnimatePresence> 
 
 
 
@@ -277,7 +279,7 @@ setTimeout(() => {
 
 export function Stockcard({symbol,count ,isloading}){
 
-  const {  addstocks, removestocks, decreasecount } = useContext(StockContext);
+  const {  addstocks, removestocks,Balance,setBalance , decreasecount,changeBalance } = useContext(StockContext);
   const keys = JSON.parse(import.meta.env.VITE_API_KEYS || "[]");
 
 const [Card,setcard]=useState({})
@@ -365,11 +367,11 @@ return  ( isloading ?( <YouTube/>):
 <div className=" flex items-center justify-center space-x-4 ">
     <button className= {`px-4 py-2 hover:bg-green-400 transition-all duration-300 text-center rounded-xl active:scale-95  bg-green-600 ${Card.c>Card.pc?"animate-pulse":"" }`   } 
     
-    onClick={  ()=>{ addstocks( {title: symbol}) } }
+    onClick={  ()=>{ addstocks( {title: symbol}) , changeBalance(-Card.pc) } }
     >  Buy</button>
     <button className=  {`px-4 hover:bg-red-400 transition-all duration-300 py-2 text-center rounded-xl active:scale-95  bg-red-600 ${Card.pc>Card.c?"animate-pulse":"" }` }
     
-    onClick={  ()=>{ decreasecount( {title: symbol} ) } }
+    onClick={  ()=>{ decreasecount( {title: symbol} ),  changeBalance(Card.pc)  } }
 
     >  Sell</button>
 </div>
