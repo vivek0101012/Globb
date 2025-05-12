@@ -3,17 +3,10 @@ import { useContext, useState } from "react";
 
 
 import { useEffect } from "react";
-import { motion,AnimatePresence } from "framer-motion";
-import { AnimatedNumber } from "./animatenumber";
+import Performance from "./performamcechart";
 export default function  Mainportfolio (){
   const { stocks } = useContext(StockContext);
-const [holdings,setholdings]=useState([])
-
-
-
-
-
-const {  Balance } = useContext(StockContext);
+  console.log(stocks)
 
 
 
@@ -26,62 +19,28 @@ const {  Balance } = useContext(StockContext);
 
 
 
-    const portfolioOverview = [
-        
-            
-              {
-                "title": "Total Investment",
-                "value": 15000
-              },
-              {
-                "title": "Current Value",
-                "value": 16500
-              },
-              {
-                "title": "Total Profit/Loss",
-                "value": 1500
-              },
-              {
-                "title": "Overall Change (%)",
-                "value": 10
-              },
-              {
-                "title": "Risk Mode",
-                "value": "Moderate"
-              },
-              {
-                "title": "Total Stocks",
-                "value": 10
-              }
-        
-          
-      ];
-      
 
 
 
-      const apiKey = "cv9fb89r01qkfpsjhdj0cv9fb89r01qkfpsjhdjg";
 
-      const [details,setdetails]=useState([])
-      const[expand,setexpand]=useState(false)
-    console.log(stocks)
+
   
       
 
 
 
-return <div className=" py-8  text-white items-center  bg-gray-900 rounded-2xl w-full flex flex-col"> 
+return <div className=" py-8  space-y04 text-white items-center  overflow-y-clip  bg-gray-900 rounded-2xl w-full flex flex-col"> 
 
 
 
 
 
-<div className="    md:text-3xl text-lg font-semibold">
+<div className=" w-full text-center   md:text-3xl text-lg font-semibold">
   Portfolio <span className="text-blue-500 drop-shadow-[0_0_10px_#3b82f6] shadow-sm hover:drop-shadow-[0_0_20px_#3b82f6]"> Overview</span>
 </div>
 
 
- {stocks.length>0 && <div className=" mt-4   isolate rounded-xl bg-gray-950 shadow-lg ring-1 ring-black/5   py-2 text-white font-satoshi ">
+ {stocks.length>0 && <div className=" mt-4  w-[96%]  isolate rounded-xl bg-gray-950 shadow-lg ring-1 ring-black/5   py-2 text-white font-satoshi ">
 
 
     <div className="w-full   ">
@@ -92,8 +51,8 @@ return <div className=" py-8  text-white items-center  bg-gray-900 rounded-2xl w
 
 
 
-<div className="overflow-x-auto    max-h-[340px] overflow-y-scroll px-4 no-scrollbar w-full mt-">
-        <table className="min-w-full rounded-xl  overflow-scroll  border-gray-500 border-opacity-40 table-auto">
+<div className="overflow-x-auto   max-h-[300px] overflow-y-scroll px-4 no-scrollbar w-full ">
+        <table className="w-full rounded-xl  overflow-scroll  border-gray-500 border-opacity-40 table-auto">
 
           <tbody>
             {stocks.map((e, index) => 
@@ -115,6 +74,47 @@ return <div className=" py-8  text-white items-center  bg-gray-900 rounded-2xl w
 </div>
 
 }
+
+<div className="py-8 text-center w-[96%] mt-4 space-y-4 bg-gray-950 px-2 rounded-2xl">
+<p className="bg-gradient-to-r  from-blue-400 to-pink-500 bg-clip-text text-transparent text-xl font-bold"> 
+USERS MARKET PERFORMANCE
+
+
+</p>
+<div className=" flex space-x-6 items-center justify-center">
+  <div className="flex flex-col items-center">
+    <div className="w-4 h-4 rounded-full bg-red-600" />
+    <p className="text-white text-xs mt-2">Strong Sell</p>
+  </div>
+  <div className="flex flex-col items-center">
+    <div className="w-4 h-4 rounded-full bg-orange-500" />
+    <p className="text-white text-xs mt-2">Sell</p>
+  </div>
+  <div className="flex flex-col items-center">
+    <div className="w-4 h-4 rounded-full bg-yellow-500" />
+    <p className="text-white text-xs mt-2">Hold</p>
+  </div>
+  <div className="flex flex-col items-center">
+    <div className="w-4 h-4 rounded-full bg-blue-500" />
+    <p className="text-white text-xs mt-2">Buy</p>
+  </div>
+  <div className="flex flex-col items-center">
+    <div className=" w-4 h-4 rounded-full bg-green-500" />
+    <p className="text-white text-xs mt-2">Strong Buy</p>
+  </div>
+</div>
+
+
+
+<Performance/>
+
+
+
+
+
+</div>
+
+
 
 
 
@@ -170,7 +170,7 @@ loaddata()
 
 
 console.log(data)
-return   <tr className="w-full max-h-[320px] overflow-y-scroll z-10 text-[9px] md:text-sm">
+return   <tr className="w-full max-h-[300px] overflow-y-scroll z-10 text-[9px] md:text-sm">
               
 <td className="px-4 py-2   border-opacity-40  border-gray-500 border-opacity-4   ">
     <div className=" flex justify-center items-center space-x-5 md:space-x-10">
@@ -198,4 +198,4 @@ return   <tr className="w-full max-h-[320px] overflow-y-scroll z-10 text-[9px] m
 
 
 
-}
+} 

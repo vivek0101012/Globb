@@ -41,7 +41,7 @@ fetchdata();
 
 return <motion.div className=" py-16 md:w-[80%] mx-auto text-white font-satoshi mt-[-40px]"
 
-initial={{ opacity: 0, y:60 }}
+initial={{ opacity: 0, y:60 }} 
 whileInView={{ opacity: 1, y: 0 }}
 transition={{ duration: 0.5, e1ase: 'easeOut' }}
 viewport={{ once: false, amount: 0.5 }}
@@ -59,7 +59,7 @@ viewport={{ once: false, amount: 0.5 }}
 
     <div className=" text-3xl  text-wrap "> Market <span className=" text-blue-600"> Overview</span> </div>
 
-<div className=" w-11/12 isolate rounded-xl bg-white/5 shadow-lg ring-1 ring-black/5 rounded-full  p-4 space-y-4">
+<div className=" w-11/12 isolate rounded-xl border-gray-800 border bg-gray-950 shadow-lg ring-1 ring-black/5 rounded-full  p-4 space-y-4">
 <div className="overflow-x-auto ml-4 px-4 no-scrollbar  mt-8">
         <table className="min-w-full  border-collapse  border-gray-500 border-opacity-40 table-auto">
       

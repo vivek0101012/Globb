@@ -63,7 +63,7 @@ export default function Sidebarportfolio(){
       ];
       
    
-   return  (<div className="py-4 sm:mt-2  font-lemonMilk  w-[320px]  text-white/70 rounded-2xl  bg-gray-900">
+   return  (<div className="py-4 sm:mt-2 max-h-screen mt-2 font-lemonMilk  text-white/70 rounded-2xl  bg-gray-900">
 
 <div className="flex flex-col md:w-[280px] px-2 py-2 space-y-2 ">
 

@@ -55,7 +55,7 @@ export default function Testimonials() {
 
 
   return (
-    <div className="text-white bg-[#18202F] flex flex-col wmt-10 items-center justify-center font-playfair">
+    <div className="text-white bg-gray-900 flex flex-col wmt-10 items-center justify-center font-playfair">
       <h2 className="text-center mt-8 text-lg font-semibold text-blue-500 ">TESTIMONIALS</h2>
       <h1 className="text-center md:text-3xl text-2xl text-white font-semibold">
         What our Customers say...
@@ -89,7 +89,7 @@ export function Card({reviews}){
 
   // eslint-disable-next-line react/prop-types
   const { image, name, review ,stars} = reviews;
- return <motion.div className="  bg-[#1F2937]  rounded-md h-[300px] border-2 border-gray-600 min-w-[250px]  flex flex-col shadow-lg py-2 px-4  space-y-2   "
+ return <motion.div className="  bg-gray-950  rounded-2xl h-[300px]  border  border-gray-800 min-w-[250px]  flex flex-col shadow-lg py-4 px-4  space-y-2   "
  
  initial={{ opacity: 0, y: 40 }}
  whileInView={{ opacity: 1, y: 0 }}
@@ -117,7 +117,7 @@ export function Card({reviews}){
 
 </div>
 
-     <h1 className=" text-sm text-wrap text-center  opacity-55 "> {review}</h1>
+     <h1 className=" text-[13px] text-wrap text-center  opacity-55 "> {review}</h1>
 
   
 
