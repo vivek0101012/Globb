@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext'; // Add this import
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
@@ -9,6 +10,7 @@ const Login = () => {
   });
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth(); // Add this line
 
   const handleChange = (e) => {
     setCredentials({
@@ -23,9 +25,8 @@ const Login = () => {
       const response = await axios.post('http://localhost:3000/api/auth/login', credentials);
       
       if (response.data.token) {
-        // Store the token in localStorage
-        localStorage.setItem('token', response.data.token);
-        // Redirect to dashboard or home page
+        // Use the login function from context instead of directly setting localStorage
+        login(response.data.token);
         navigate('/');
       }
     } catch (err) {

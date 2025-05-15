@@ -1,25 +1,40 @@
 import { useState } from "react"
 import { motion } from "framer-motion";
 import { useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 
 
 
 export default function  Navbar(){
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const itemRefs = useRef([]);
  
   const [shadowProps, setShadowProps] = useState({ x:20, width: 68 });
 
-  const navLinks = [
+  const publicLinks = [
     { to: "/", label: "Home" },
     { to: "/market", label: "Market" },
-    { to: "/portfolio", label: "Portfolio" },
-
   ];
+
+  const protectedLinks = [
+    { to: "/portfolio", label: "Portfolio" },
+  ];
+
+  // Combine links based on auth state
+  const navLinks = [...publicLinks, ...(user ? protectedLinks : [])];
+
   const [clickid,setclickid]=useState(0);
 
 const [isopen,setisopen ]=useState(false);
+
+const handleLogout = () => {
+    
+  logout();
+ navigate('/', { replace: true });
+};
 
 return <div className=" w-full p-1 flex flex-col justify-center items-center  font-satoshi text-white text-opacity-50 text-sm font-extralight space-y-1">
 
@@ -123,11 +138,25 @@ onMouseLeave={ ()=>{
 
 
 <div className="  flex rounded-lg justify-center items-center px-2  space-x-4">
-
-<Link to={"/login"}  ><div>Login</div></Link>
-<div className="py-2 px-4  flex justify-center  active:scale-90 border-[0.25px]  border-[#90AFEE] opacity-80 shadow-inner  shadow-sm shadow-[#90AFEE] rounded-full  " >signin</div>
-
-</div>
+    {!user ? (
+      <>
+        <Link to={"/login"}><div>Login</div></Link>
+        <div className="py-2 px-4 flex justify-center active:scale-90 border-[0.25px] border-[#90AFEE] opacity-80 shadow-inner shadow-sm shadow-[#90AFEE] rounded-full">
+          <Link to={"/register"}><div>Register</div></Link>
+        </div>
+      </>
+    ) : (
+      <>
+        <Link to={"/test"}><div>Profile</div></Link>
+        <div 
+          onClick={handleLogout}
+          className="py-2 px-4 flex justify-center cursor-pointer active:scale-90 border-[0.25px] border-[#90AFEE] opacity-80 shadow-inner shadow-sm shadow-[#90AFEE] rounded-full"
+        >
+          Logout
+        </div>
+      </>
+    )}
+  </div>
 
 
 
@@ -177,23 +206,45 @@ onMouseLeave={ ()=>{
 
 
 
-export function Mobilemenu(){
+export function Mobilemenu() {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
-return <div className=" w-9/12 bg-gradient-to-br font-thin from-[#171F2E]/30 to-[#0A1E42]/30 backdrop-blur-lg border border-white/10  text-white shadow-lg rounded-lg flex-col sm:flex flex justify-center items-center mt-[-20px] space-y-4 p-4 "> 
+  const handleLogout = () => {
+    logout();
+    navigate('/', { replace: true });
+  };
 
+  return (
+    <div className="w-9/12 bg-gradient-to-br font-thin from-[#171F2E]/30 to-[#0A1E42]/30 backdrop-blur-lg border border-white/10 text-white shadow-lg rounded-lg flex-col sm:flex flex justify-center items-center mt-[-20px] space-y-4 p-4">
+      <Link to="/"><div className="active:scale-90">Home</div></Link>
+      <Link to="/market"><div className="active:scale-90">Market</div></Link>
+      {user && <Link to="/portfolio"><div className="active:scale-90">Portfolio</div></Link>}
+      {user && <Link to="/trade"><div className="active:scale-90">Trade</div></Link>}
 
-<Link to="/"><div className=" active:scale-90">Home</div></Link>
-
-<Link to="/market"><div className=" active:scale-90">Market</div></Link>
-<Link to="/portfolio"><div className=" active:scale-90">Portfolio</div></Link>
-<Link to="/trade"><div className=" active:scale-90">Trade</div></Link>
-
-<div>Login</div>
-<div className="py-2 px-4  flex justify-center items-center active:scale-90 border-[0.25px]  border-[#90AFEE] opacity-80 shadow-inner  shadow-sm shadow-[#90AFEE] rounded-full  " >signin</div>
-
-</div>
-
-
+      {/* Auth buttons */}
+      {!user ? (
+        <>
+          <Link to="/login"><div>Login</div></Link>
+          <Link to="/register">
+            <div className="py-2 px-4 flex justify-center items-center active:scale-90 border-[0.25px] border-[#90AFEE] opacity-80 shadow-inner shadow-sm shadow-[#90AFEE] rounded-full">
+              Register
+            </div>
+          </Link>
+        </>
+      ) : (
+        <>
+          <Link to="/test"><div>Profile</div></Link>
+          <div 
+            onClick={handleLogout}
+            className="py-2 px-4 flex justify-center items-center cursor-pointer active:scale-90 border-[0.25px] border-[#90AFEE] opacity-80 shadow-inner shadow-sm shadow-[#90AFEE] rounded-full"
+          >
+            Logout
+          </div>
+        </>
+      )}
+    </div>
+  );
 }
 
 

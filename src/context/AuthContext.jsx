@@ -1,6 +1,6 @@
 // AuthContext.js
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
+import jwt_decode from "jwt-decode";
 
 const AuthContext = createContext();
 
@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
-        const decoded = jwtDecode(token);
+        const decoded = jwt_decode(token);
         setUser(decoded);
       } catch (e) {
         console.error("Invalid token");
@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = (token) => {
     localStorage.setItem("token", token);
-    setUser(jwtDecode(token));
+    setUser(jwt_decode(token));
   };
 
   const logout = () => {
