@@ -124,7 +124,7 @@ onMouseLeave={ ()=>{
 
 <div className="  flex rounded-lg justify-center items-center px-2  space-x-4">
 
-<div>Login</div>
+<Link to={"/login"}  ><div>Login</div></Link>
 <div className="py-2 px-4  flex justify-center  active:scale-90 border-[0.25px]  border-[#90AFEE] opacity-80 shadow-inner  shadow-sm shadow-[#90AFEE] rounded-full  " >signin</div>
 
 </div>

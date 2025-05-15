@@ -11,17 +11,18 @@ import Navbar from "./components/navbar"
 import Testimonials from "./components/testimonials"
  import { StockProvider } from "./context/Stocklistcontext"
 import Loader from "./components/loader"
-
+import Login from "./components/backend/login"
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Courses from "./components/courses"
 import Portfolio2 from "./components/portfolio2"
+import { AuthProvider } from "./context/AuthContext"
 
 
 function App(){
 
   return <div className=" font-lemonMilk w-full min-h-screen bg-[#080E1A]">
-
+<AuthProvider>
 <StockProvider>
 <Router>
 <Navbar></Navbar> 
@@ -40,6 +41,14 @@ function App(){
   </Suspense>
   
 } />
+<Route path="/login" element={
+  <Suspense fallback={<Loader></Loader> }>
+
+<Login />
+
+  </Suspense>
+  
+} />
 
 <Route path="/portfolio" element={<Portfolio2 />} />
 </Routes>
@@ -50,8 +59,8 @@ function App(){
 
 <Footer></Footer>
 </StockProvider>
-
-
+ 
+</AuthProvider>
   </div>
 
 }
