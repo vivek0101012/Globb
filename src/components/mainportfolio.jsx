@@ -188,12 +188,14 @@ return   <tr className="w-full max-h-[300px] overflow-y-scroll z-10 text-[9px] m
 
 
 </td>
-<td className="px-4 py-2    border-opacity-40  border-gray-500 border-opacity-4 "> $  {(data.c).toFixed(2)}  <span>x</span> {(e.count)} </td>
-<td className={`px-6 py-2   border-opacity-40  border-gray-500 border-opacity-4 ${(data.d).toFixed(2) >= 0 ? "text-green-500" : "text-red-500"}`}>
-  {(data.d).toFixed(2)}
+<td className="px-4 py-2    border-opacity-40  border-gray-500 border-opacity-4 ">    {data.c ? `$ ${(data.c).toFixed(2)} x ${e.count}` : "Loading..."}
+ </td>
+<td className={`px-6 py-2   border-opacity-40  border-gray-500 border-opacity-4 ${(data.d)>= 0 ? "text-green-500" : "text-red-500"}`}>
+{data.d !== undefined ? data.d.toFixed(2) : "—"}
 </td>
-<td className={`px-4 py-2  border-opacity-40 border-gray-500 border-opacity-4 ${data.dp >= 0 ? "text-green-500" : "text-red-500"}`}>{(data.dp).toFixed(2)}%</td>
-<td className="px-4 py-2   border-opacity-40  border-gray-500 border-opacity-4 ">     { "$ "+(data.c*e.count).toFixed(2)} </td>
+<td className={`px-4 py-2  border-opacity-40 border-gray-500 border-opacity-4 ${data.dp >= 0 ? "text-green-500" : "text-red-500"}`}>  {data.dp !== undefined ? `${data.dp.toFixed(2)}%` : "—"}
+%</td>
+< td className="px-4 py-2   border-opacity-40  border-gray-500 border-opacity-4 "> {data.c ? `$ ${(data.c * e.count).toFixed(2)}` : "—"} </td>
 </tr>
 
 
