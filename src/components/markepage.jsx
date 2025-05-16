@@ -4,6 +4,7 @@ import { StockContext } from "../context/Stocklistcontext";
 import { useContext } from "react";
 import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from 'react-router-dom';
 
 export  default function  Market(){
 
@@ -359,6 +360,36 @@ const handleBuy = async () => {
   }
 };
 
+// Trading buttons component
+const TradingButtons = () => (
+  <div className="flex items-center justify-center space-x-4">
+    <button 
+      className={`px-4 py-2 hover:bg-green-400 transition-all duration-300 text-center rounded-xl active:scale-95 bg-green-600 ${Card.c>Card.pc?"animate-pulse":""}`} 
+      onClick={() => setBuyPopupOpen(true)}
+    >
+      Buy
+    </button>
+    <button 
+      className={`px-4 hover:bg-red-400 transition-all duration-300 py-2 text-center rounded-xl active:scale-95 bg-red-600 ${Card.pc>Card.c?"animate-pulse":""}`}
+      onClick={() => { decreasecount({title: symbol}), changeBalance(Card.pc) }}
+    >
+      Sell
+    </button>
+  </div>
+);
+
+// Login prompt component
+const LoginPrompt = () => (
+  <div className="flex flex-col items-center space-y-2">
+    <Link 
+      to="/login"
+      className="px-6 py-2 bg-blue-600 hover:bg-blue-700 transition-all duration-300 text-center rounded-xl active:scale-95"
+    >
+      Login to Trade
+    </Link>
+    <p className="text-sm text-gray-400">Sign in to start trading</p>
+  </div>
+);
 
 return  ( isloading ?( <YouTube/>):
   (<motion.div className="  bg-gradient-to-br from-white/10 to-white/5
@@ -390,17 +421,7 @@ return  ( isloading ?( <YouTube/>):
 <div className={` text-sm  md:text-lg  ${Card.c>Card.pc?"text-green-500":"text-red-500"
 } ` } >Change: {Card.dp ? `${Card.dp}%` : "N/A"}</div>
 
-<div className=" flex items-center justify-center space-x-4 ">
-    <button className= {`px-4 py-2 hover:bg-green-400 transition-all duration-300 text-center rounded-xl active:scale-95  bg-green-600 ${Card.c>Card.pc?"animate-pulse":"" }`   } 
-    
-    onClick={() => setBuyPopupOpen(true)}
-    >  Buy</button>
-    <button className=  {`px-4 hover:bg-red-400 transition-all duration-300 py-2 text-center rounded-xl active:scale-95  bg-red-600 ${Card.pc>Card.c?"animate-pulse":"" }` }
-    
-    onClick={  ()=>{ decreasecount( {title: symbol} ),  changeBalance(Card.pc)  } }
-
-    >  Sell</button>
-</div>
+{user ? <TradingButtons /> : <LoginPrompt />}
 
 {isBuyPopupOpen && (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
