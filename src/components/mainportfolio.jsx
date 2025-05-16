@@ -1,203 +1,125 @@
 import { StockContext } from "../context/Stocklistcontext";
-import { useContext, useState } from "react";
-
-
-import { useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
+import { useAuth } from '../context/AuthContext';
 import Performance from "./performamcechart";
-export default function  Mainportfolio (){
+
+export default function Mainportfolio() {
   const { stocks } = useContext(StockContext);
-  console.log(stocks)
+  const { user } = useAuth();
+  const [portfolioData, setPortfolioData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
+  // Fetch data on component mount
+  useEffect(() => {
+    if (user && user.userId) {
+      fetchAllPortfolioData();
+    }
+  }, [user]);
 
+  const fetchAllPortfolioData = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`http://localhost:3000/api/data/portfoliodata/${user.userId}`);
+      const data = await response.json();
+      if (data.status) {
+        setPortfolioData(data.data);
+      }
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  // Aggregation helper function
+  const aggregatePortfolioData = (portfolios) => {
+    const aggregatedData = portfolios.reduce((acc, portfolio) => {
+      const existingProduct = acc.find(p => p.productName === portfolio.productName);
+      if (existingProduct) {
+        existingProduct.totalQuantity += portfolio.buy.quantity;
+        existingProduct.totalInvested += portfolio.buy.price * portfolio.buy.quantity;
+        existingProduct.entries.push(portfolio);
+      } else {
+        acc.push({
+          productName: portfolio.productName,
+          totalQuantity: portfolio.buy.quantity,
+          totalInvested: portfolio.buy.price * portfolio.buy.quantity,
+          averagePrice: portfolio.buy.price,
+          entries: [portfolio]
+        });
+      }
+      return acc;
+    }, []);
 
+    aggregatedData.forEach(product => {
+      product.averagePrice = product.totalInvested / product.totalQuantity;
+    });
+    return aggregatedData;
+  };
 
-
-
-
-
-
-
-
-
-
-
-
-
-  
-      
-
-
-
-return <div className=" py-8  space-y04 text-white items-center  overflow-y-clip  bg-gray-900 rounded-2xl w-full flex flex-col"> 
-
-
-
-
-
-<div className=" w-full text-center   md:text-3xl text-lg font-semibold">
-  Portfolio <span className="text-blue-500 drop-shadow-[0_0_10px_#3b82f6] shadow-sm hover:drop-shadow-[0_0_20px_#3b82f6]"> Overview</span>
-</div>
-
-
- {stocks.length>0 && <div className=" mt-4  w-[96%]  isolate rounded-xl bg-gray-950 shadow-lg ring-1 ring-black/5   py-2 text-white font-satoshi ">
-
-
-    <div className="w-full   ">
-
-
-
-<div className=" w-full   text-sm rounded-full ">
-
-
-
-<div className="overflow-x-auto   max-h-[300px] overflow-y-scroll px-4 no-scrollbar w-full ">
-        <table className="w-full rounded-xl  overflow-scroll  border-gray-500 border-opacity-40 table-auto">
-
-          <tbody>
-            {stocks.map((e, index) => 
-
-
-<Holdingstable key={index} e={e} ></Holdingstable>)
-}
-          </tbody>
-        </table>
+  return (
+    <div className="py-8 space-y-4 text-white items-center overflow-y-clip bg-gray-900 rounded-2xl w-full flex flex-col">
+      <div className="w-full text-center md:text-3xl text-lg font-semibold">
+        Portfolio <span className="text-blue-500 drop-shadow-[0_0_10px_#3b82f6] shadow-sm hover:drop-shadow-[0_0_20px_#3b82f6]">Overview</span>
       </div>
 
-</div>
+      {/* Portfolio Holdings Section */}
+      {portfolioData && (
+        <div className="mt-4 w-[96%] isolate rounded-xl bg-gray-950 shadow-lg ring-1 ring-black/5 py-4 px-4">
+          <div className="mb-4 border-b border-gray-800 pb-4">
+            <h3 className="text-xl font-semibold text-blue-400">Portfolio Summary</h3>
+            <div className="grid grid-cols-2 gap-4 mt-2">
+              <p>Total Invested: ${portfolioData.statistics.totalInvested.toFixed(2)}</p>
+              <p>Available Balance: ${portfolioData.userBalance.toFixed(2)}</p>
+            </div>
+          </div>
 
+          <div className="space-y-4">
+            {aggregatePortfolioData(portfolioData.portfolios).map((product, index) => (
+              <div key={index} className="bg-gray-900 rounded-lg p-4">
+                <div className="flex justify-between items-center mb-2">
+                  <h4 className="text-lg font-semibold text-blue-400">{product.productName}</h4>
+                  <span className="px-2 py-1 bg-blue-500/20 text-blue-400 rounded text-sm">
+                    {product.entries.length} transactions
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <p>Quantity: {product.totalQuantity}</p>
+                  <p>Invested: ${product.totalInvested.toFixed(2)}</p>
+                  <p>Avg Price: ${product.averagePrice.toFixed(2)}</p>
+                </div>
+                
+                <details className="mt-2">
+                  <summary className="cursor-pointer text-blue-400 text-sm">
+                    Transaction History
+                  </summary>
+                  <div className="mt-2 space-y-2">
+                    {product.entries.map((entry, i) => (
+                      <div key={i} className="pl-4 border-l border-gray-700 text-sm">
+                        <p>Buy Price: ${entry.buy.price}</p>
+                        <p>Quantity: {entry.buy.quantity}</p>
+                        <p>Date: {new Date(entry.createdAt).toLocaleDateString()}</p>
+                      </div>
+                    ))}
+                  </div>
+                </details>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
-
-
+      {/* Performance Chart Section */}
+      <div className="py-8 text-center w-[96%] mt-4 space-y-4 bg-gray-950 px-2 rounded-2xl">
+        {/* ...existing performance chart code... */}
+        <Performance />
+      </div>
     </div>
-
-</div>
-
-}
-
-<div className="py-8 text-center w-[96%] mt-4 space-y-4 bg-gray-950 px-2 rounded-2xl">
-<p className="bg-gradient-to-r  from-blue-400 to-pink-500 bg-clip-text text-transparent text-xl font-bold"> 
-USERS MARKET PERFORMANCE
-
-
-</p>
-<div className=" flex space-x-6 items-center justify-center">
-  <div className="flex flex-col items-center">
-    <div className="w-4 h-4 rounded-full bg-red-600" />
-    <p className="text-white text-xs mt-2">Strong Sell</p>
-  </div>
-  <div className="flex flex-col items-center">
-    <div className="w-4 h-4 rounded-full bg-orange-500" />
-    <p className="text-white text-xs mt-2">Sell</p>
-  </div>
-  <div className="flex flex-col items-center">
-    <div className="w-4 h-4 rounded-full bg-yellow-500" />
-    <p className="text-white text-xs mt-2">Hold</p>
-  </div>
-  <div className="flex flex-col items-center">
-    <div className="w-4 h-4 rounded-full bg-blue-500" />
-    <p className="text-white text-xs mt-2">Buy</p>
-  </div>
-  <div className="flex flex-col items-center">
-    <div className=" w-4 h-4 rounded-full bg-green-500" />
-    <p className="text-white text-xs mt-2">Strong Buy</p>
-  </div>
-</div>
-
-
-
-<Performance/>
-
-
-
-
-
-</div>
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  );
 }
 
 
-export function Holdingstable({e}){
-
-
-let symbol=e.title ;
-const [data,setdata]=useState({});
-const key= "cvbhlj9r01qob7udmqhgcvbhlj9r01qob7udmqi0"
-useEffect( 
-
-
-()=>{
-const loaddata= async ()=>{
-
-  const res= await  fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${key}`)
-  const rem= await res.json();
-
-  setdata((prev)=>{return {...prev,...rem} });
-
-}
-
-loaddata()
-}
-
-  ,[])
-
-
-console.log(data)
-return   <tr className="w-full max-h-[300px] overflow-y-scroll z-10 text-[9px] md:text-sm">
-              
-<td className="px-4 py-2   border-opacity-40  border-gray-500 border-opacity-4   ">
-    <div className=" flex justify-center items-center space-x-5 md:space-x-10">
-                        
-    <img src={`https://financialmodelingprep.com/image-stock/${symbol}.png`} className="md:w-6 md:h-6" alt="" />
-    
-    
-                    <img 
-    className="w-4 md:w-6 md:h-6 h-4 "
-      src={data.c > data.pc ? "/images/up.png" : "/images/down.png"} 
-      alt="Stock Trend" 
-    />
-    </div>
 
 
 
-</td>
-<td className="px-4 py-2    border-opacity-40  border-gray-500 border-opacity-4 ">    {data.c ? `$ ${(data.c).toFixed(2)} x ${e.count}` : "Loading..."}
- </td>
-<td className={`px-6 py-2   border-opacity-40  border-gray-500 border-opacity-4 ${(data.d)>= 0 ? "text-green-500" : "text-red-500"}`}>
-{data.d !== undefined ? data.d.toFixed(2) : "—"}
-</td>
-<td className={`px-4 py-2  border-opacity-40 border-gray-500 border-opacity-4 ${data.dp >= 0 ? "text-green-500" : "text-red-500"}`}>  {data.dp !== undefined ? `${data.dp.toFixed(2)}%` : "—"}
-%</td>
-< td className="px-4 py-2   border-opacity-40  border-gray-500 border-opacity-4 "> {data.c ? `$ ${(data.c * e.count).toFixed(2)}` : "—"} </td>
-</tr>
-
-
-
-} 

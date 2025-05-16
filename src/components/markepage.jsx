@@ -1,12 +1,13 @@
-
 import { useEffect, useState } from "react";
 import YouTube from "./skeleton";
 import { StockContext } from "../context/Stocklistcontext";
 import { useContext } from "react";
+import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from "framer-motion";
 
 export  default function  Market(){
 
+  
   const {  addstocks, removestocks, decreasecount,changeBalance } = useContext(StockContext);
 
 
@@ -277,14 +278,14 @@ setTimeout(() => {
 
 }
 
-export function Stockcard({symbol,count ,isloading}){
-
+const Stockcard = ({symbol, count, isloading}) => {
   const {  addstocks, removestocks,Balance,setBalance , decreasecount,changeBalance } = useContext(StockContext);
   const keys = JSON.parse(import.meta.env.VITE_API_KEYS || "[]");
+  const [isBuyPopupOpen, setBuyPopupOpen] = useState(false);
+  const { user } = useAuth(); // Add this to get user context
 
 const [Card,setcard]=useState({})
-
-
+const [quantity, setQuantity] = useState(1);
 
 
 useEffect (()=>{
@@ -331,7 +332,32 @@ if (Card.pc === undefined || Card.pc === null) {
   return <></>;
 }
 
+const handleBuy = async () => {
+  try {
+    const response = await fetch('http://localhost:3000/api/portfolio/buy', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId: user.userId,
+        productName: symbol,
+        price: Card.c,
+        quantity: quantity
+      })
+    });
 
+    const data = await response.json();
+    if (data.status) {
+      addstocks({ title: symbol });
+      changeBalance(-Card.c * quantity);
+      setBuyPopupOpen(false);
+      setQuantity(1); // Reset quantity after purchase
+    }
+  } catch (error) {
+    console.error('Buy request failed:', error);
+  }
+};
 
 
 return  ( isloading ?( <YouTube/>):
@@ -367,7 +393,7 @@ return  ( isloading ?( <YouTube/>):
 <div className=" flex items-center justify-center space-x-4 ">
     <button className= {`px-4 py-2 hover:bg-green-400 transition-all duration-300 text-center rounded-xl active:scale-95  bg-green-600 ${Card.c>Card.pc?"animate-pulse":"" }`   } 
     
-    onClick={  ()=>{ addstocks( {title: symbol}) , changeBalance(-Card.pc) } }
+    onClick={() => setBuyPopupOpen(true)}
     >  Buy</button>
     <button className=  {`px-4 hover:bg-red-400 transition-all duration-300 py-2 text-center rounded-xl active:scale-95  bg-red-600 ${Card.pc>Card.c?"animate-pulse":"" }` }
     
@@ -376,7 +402,85 @@ return  ( isloading ?( <YouTube/>):
     >  Sell</button>
 </div>
 
+{isBuyPopupOpen && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-[#1E293B] p-6 rounded-lg border-2 border-white/20 max-w-md w-full">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-semibold">Confirm Purchase</h2>
+        <button 
+          onClick={() => {
+            setBuyPopupOpen(false);
+            setQuantity(1); // Reset quantity when closing
+          }}
+          className="text-gray-400 hover:text-white"
+        >
+          <img src="/images/close.png" className="w-5 h-5" alt="close" />
+        </button>
+      </div>
+      
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <span>Stock:</span>
+          <span className="font-semibold">{symbol}</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span>Price per share:</span>
+          <span className="font-semibold">${Card.c}</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span>Quantity:</span>
+          <div className="flex items-center space-x-2">
+            <button 
+              onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
+              className="px-2 py-1 bg-gray-600 rounded hover:bg-gray-700"
+            >
+              -
+            </button>
+            <input
+              type="number"
+              min="1"
+              value={quantity}
+              onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+              className="w-20 px-2 py-1 bg-gray-700 rounded text-center"
+            />
+            <button 
+              onClick={() => setQuantity(prev => prev + 1)}
+              className="px-2 py-1 bg-gray-600 rounded hover:bg-gray-700"
+            >
+              +
+            </button>
+          </div>
+        </div>
+        <div className="flex items-center justify-between text-lg font-bold text-green-400">
+          <span>Total Amount:</span>
+          <span>${(Card.c * quantity).toFixed(2)}</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span>User:</span>
+          <span className="font-semibold">{user?.email}</span>
+        </div>
+      </div>
 
+      <div className="flex justify-end space-x-4 mt-6">
+        <button
+          onClick={() => {
+            setBuyPopupOpen(false);
+            setQuantity(1); // Reset quantity when canceling
+          }}
+          className="px-4 py-2 rounded-lg bg-gray-600 hover:bg-gray-700 transition-colors"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={handleBuy}
+          className="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 transition-colors"
+        >
+          Confirm Buy
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
 </motion.div>)
 
