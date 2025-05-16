@@ -2,13 +2,22 @@ import { StockContext } from "../context/Stocklistcontext";
 import { useContext, useState, useEffect } from "react";
 import { useAuth } from '../context/AuthContext';
 import Performance from "./performamcechart";
+import { usePortfolio } from '../context/PortfolioContext';
 
 export default function Mainportfolio() {
+  const { 
+    setPortfolioData,
+    setCurrentPrices,
+    setAggregatedData,
+    setTotalPortfolioValue,
+    portfolioData,
+    currentPrices
+  } = usePortfolio();
   const { stocks } = useContext(StockContext);
   const { user } = useAuth();
-  const [portfolioData, setPortfolioData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const apiKey = "cv9fb89r01qkfpsjhdj0cv9fb89r01qkfpsjhdjg"; // Replace with your API key
 
   // Fetch data on component mount
   useEffect(() => {
@@ -16,6 +25,32 @@ export default function Mainportfolio() {
       fetchAllPortfolioData();
     }
   }, [user]);
+
+  // Update current prices when portfolio data changes
+  useEffect(() => {
+    if (portfolioData?.portfolios) {
+      fetchCurrentPrices(portfolioData.portfolios);
+    }
+  }, [portfolioData]);
+
+  // Fetch current prices for all products
+  const fetchCurrentPrices = async (products) => {
+    const prices = {};
+    for (const product of products) {
+      try {
+        const response = await fetch(
+          `https://finnhub.io/api/v1/quote?symbol=${product.productName}&token=${apiKey}`
+        );
+        const data = await response.json();
+        if (data.c) {
+          prices[product.productName] = data.c;
+        }
+      } catch (error) {
+        console.error(`Error fetching price for ${product.productName}:`, error);
+      }
+    }
+    setCurrentPrices(prices);
+  };
 
   const fetchAllPortfolioData = async () => {
     setLoading(true);
@@ -30,6 +65,13 @@ export default function Mainportfolio() {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Calculate total portfolio value
+  const calculateTotalPortfolioValue = (aggregatedData) => {
+    return aggregatedData.reduce((total, product) => {
+      return total + (product.currentPrice * product.totalQuantity);
+    }, 0);
   };
 
   // Aggregation helper function
@@ -52,11 +94,26 @@ export default function Mainportfolio() {
       return acc;
     }, []);
 
+    // Calculate additional metrics with current prices
     aggregatedData.forEach(product => {
       product.averagePrice = product.totalInvested / product.totalQuantity;
+      product.currentPrice = currentPrices[product.productName] || 0;
+      product.currentValue = product.currentPrice * product.totalQuantity;
+      product.profitLoss = product.currentValue - product.totalInvested;
+      product.profitLossPercentage = ((product.currentValue - product.totalInvested) / product.totalInvested) * 100;
     });
+
     return aggregatedData;
   };
+
+  // After calculating aggregatedData in your existing code:
+  useEffect(() => {
+    if (portfolioData?.portfolios) {
+      const aggregated = aggregatePortfolioData(portfolioData.portfolios);
+      setAggregatedData(aggregated);
+      setTotalPortfolioValue(calculateTotalPortfolioValue(aggregated));
+    }
+  }, [portfolioData, currentPrices]);
 
   return (
     <div className="py-8 space-y-4 text-white items-center overflow-y-clip bg-gray-900 rounded-2xl w-full flex flex-col">
@@ -64,13 +121,13 @@ export default function Mainportfolio() {
         Portfolio <span className="text-blue-500 drop-shadow-[0_0_10px_#3b82f6] shadow-sm hover:drop-shadow-[0_0_20px_#3b82f6]">Overview</span>
       </div>
 
-      {/* Portfolio Holdings Section */}
       {portfolioData && (
         <div className="mt-4 w-[96%] isolate rounded-xl bg-gray-950 shadow-lg ring-1 ring-black/5 py-4 px-4">
           <div className="mb-4 border-b border-gray-800 pb-4">
             <h3 className="text-xl font-semibold text-blue-400">Portfolio Summary</h3>
-            <div className="grid grid-cols-2 gap-4 mt-2">
+            <div className="grid grid-cols-3 gap-4 mt-2">
               <p>Total Invested: ${portfolioData.statistics.totalInvested.toFixed(2)}</p>
+              <p>Current Value: ${calculateTotalPortfolioValue(aggregatePortfolioData(portfolioData.portfolios)).toFixed(2)}</p>
               <p>Available Balance: ${portfolioData.userBalance.toFixed(2)}</p>
             </div>
           </div>
@@ -80,14 +137,21 @@ export default function Mainportfolio() {
               <div key={index} className="bg-gray-900 rounded-lg p-4">
                 <div className="flex justify-between items-center mb-2">
                   <h4 className="text-lg font-semibold text-blue-400">{product.productName}</h4>
-                  <span className="px-2 py-1 bg-blue-500/20 text-blue-400 rounded text-sm">
-                    {product.entries.length} transactions
+                  <span className={`px-2 py-1 rounded ${
+                    product.profitLoss >= 0 ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
+                  }`}>
+                    {product.profitLoss >= 0 ? '+' : ''}{product.profitLossPercentage.toFixed(2)}%
                   </span>
                 </div>
-                <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="grid grid-cols-3 gap-4 text-sm">
                   <p>Quantity: {product.totalQuantity}</p>
+                  <p>Current Price: ${product.currentPrice.toFixed(2)}</p>
+                  <p>Current Value: ${product.currentValue.toFixed(2)}</p>
                   <p>Invested: ${product.totalInvested.toFixed(2)}</p>
                   <p>Avg Price: ${product.averagePrice.toFixed(2)}</p>
+                  <p className={`${product.profitLoss >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    P/L: ${Math.abs(product.profitLoss).toFixed(2)}
+                  </p>
                 </div>
                 
                 <details className="mt-2">
@@ -112,7 +176,6 @@ export default function Mainportfolio() {
 
       {/* Performance Chart Section */}
       <div className="py-8 text-center w-[96%] mt-4 space-y-4 bg-gray-950 px-2 rounded-2xl">
-        {/* ...existing performance chart code... */}
         <Performance />
       </div>
     </div>

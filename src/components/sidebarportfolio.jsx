@@ -1,38 +1,17 @@
 import { StockContext } from "../context/Stocklistcontext";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useAuth } from '../context/AuthContext';
+import { usePortfolio } from '../context/PortfolioContext';
 
 export default function Sidebarportfolio() {
-    const { Balance } = useContext(StockContext);
-    const { user } = useAuth();
     const [expand, setexpand] = useState(false);
-    const [portfolioData, setPortfolioData] = useState(null);
+    const { portfolioData, aggregatedData, totalPortfolioValue } = usePortfolio();
 
-    useEffect(() => {
-        if (user && user.userId) {
-            fetchPortfolioData();
-        }
-    }, [user]);
-
-    const fetchPortfolioData = async () => {
-        try {
-            const response = await fetch(`http://localhost:3000/api/data/portfoliodata/${user.userId}`);
-            const data = await response.json();
-            if (data.status) {
-                setPortfolioData(data.data);
-            }
-        } catch (error) {
-            console.error("Error fetching portfolio data:", error);
-        }
-    };
-
-    // Calculate portfolio statistics
     const getPortfolioStats = () => {
-        if (!portfolioData) return null;
+        if (!portfolioData || !aggregatedData) return null;
 
         const totalInvestment = portfolioData.statistics.totalInvested;
-        const currentBalance = portfolioData.userBalance;
+        const currentBalance = totalPortfolioValue;
         const profitLoss = currentBalance - totalInvestment;
         const percentageChange = ((currentBalance - totalInvestment) / totalInvestment) * 100;
 
@@ -40,7 +19,8 @@ export default function Sidebarportfolio() {
             totalInvestment,
             currentBalance,
             profitLoss,
-            percentageChange
+            percentageChange,
+            totalStocks: portfolioData.portfolios.length
         };
     };
 
@@ -52,7 +32,7 @@ export default function Sidebarportfolio() {
             "value": `$${stats.totalInvestment.toFixed(2)}`
         },
         {
-            "title": "Current Balance",
+            "title": "Current Value",
             "value": `$${stats.currentBalance.toFixed(2)}`
         },
         {
@@ -65,7 +45,7 @@ export default function Sidebarportfolio() {
         },
         {
             "title": "Total Stocks",
-            "value": portfolioData?.portfolios.length || 0
+            "value": stats.totalStocks
         }
     ] : [];
 

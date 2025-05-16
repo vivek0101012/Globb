@@ -16,55 +16,58 @@ import Courses from "./components/courses"
 import Portfolio2 from "./components/portfolio2"
 import { AuthProvider } from "./context/AuthContext"
 import Profile from "./components/text"
+import { PortfolioProvider } from './context/PortfolioContext';
 
 function App() {
   return <div className="font-lemonMilk w-full min-h-screen bg-[#080E1A]">
     <AuthProvider>
       <StockProvider>
-        <Router>
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<> <Home /> <Marketupdate /> <Courses/> <Testimonials /> </> } />
-            
-            {/* Protected Routes */}
-            <Route path="/test" element={
-              <ProtectedRoute>
-                <Suspense fallback={<Loader />}>
-                  <Profile/>
-                </Suspense>
-              </ProtectedRoute>
-            } />
-            
-            <Route path="/portfolio" element={
-              <ProtectedRoute>
-                <Suspense fallback={<Loader />}>
-                  <Portfolio2 />
-                </Suspense>
-              </ProtectedRoute>
-            } />
+        <PortfolioProvider>
+          <Router>
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<> <Home /> <Marketupdate /> <Courses/> <Testimonials /> </> } />
+              
+              {/* Protected Routes */}
+              <Route path="/test" element={
+                <ProtectedRoute>
+                  <Suspense fallback={<Loader />}>
+                    <Profile/>
+                  </Suspense>
+                </ProtectedRoute>
+              } />
+              
+              <Route path="/portfolio" element={
+                <ProtectedRoute>
+                  <Suspense fallback={<Loader />}>
+                    <Portfolio2 />
+                  </Suspense>
+                </ProtectedRoute>
+              } />
 
-            {/* Public Routes */}
-            <Route path="/market" element={
-              <Suspense fallback={<Loader />}>
-                <Market />
-              </Suspense>
-            } />
-            
-            <Route path="/login" element={
-              <Suspense fallback={<Loader />}>
-                <Login />
-              </Suspense>
-            } />
-            
-            <Route path="/register" element={
-              <Suspense fallback={<Loader />}>
-                <Register />
-              </Suspense>
-            } />
-          </Routes>
+              {/* Public Routes */}
+              <Route path="/market" element={
+                <Suspense fallback={<Loader />}>
+                  <Market />
+                </Suspense>
+              } />
+              
+              <Route path="/login" element={
+                <Suspense fallback={<Loader />}>
+                  <Login />
+                </Suspense>
+              } />
+              
+              <Route path="/register" element={
+                <Suspense fallback={<Loader />}>
+                  <Register />
+                </Suspense>
+              } />
+            </Routes>
 
-          <Footer />
-        </Router>
+            <Footer />
+          </Router>
+        </PortfolioProvider>
       </StockProvider>
     </AuthProvider>
   </div>
