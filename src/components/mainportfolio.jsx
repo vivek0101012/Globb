@@ -126,7 +126,18 @@ export default function Mainportfolio() {
               <div className="bg-gray-700 p-4 rounded-lg">
                 <p className="text-gray-400">Total Invested</p>
                 <p className="text-2xl">
-                  ${portfolioData.statistics?.totalInvested?.toFixed(2) ?? "0.00"}
+                  ${
+                    (Array.isArray(portfolioData.portfolios)
+                      ? portfolioData.portfolios.reduce(
+                          (sum, p) =>
+                            sum +
+                            ((p.statistics?.averagePrice || 0) *
+                              (p.statistics?.currentQuantity || 0)),
+                          0
+                        )
+                      : 0
+                    ).toFixed(2)
+                  }
                 </p>
               </div>
               <div className="bg-gray-700 p-4 rounded-lg">

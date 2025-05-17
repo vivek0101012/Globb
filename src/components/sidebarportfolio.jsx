@@ -1,51 +1,38 @@
-import { useState, useEffect } from "react";
-import { useAuth } from '../context/AuthContext';
+import { StockContext } from "../context/Stocklistcontext";
+import { useContext, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from '../context/AuthContext';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 
 export default function Sidebarportfolio() {
+    const { Balance } = useContext(StockContext);
     const { user } = useAuth();
-    const [portfolioData, setPortfolioData] = useState(null);
-    const [aggregatedData, setAggregatedData] = useState(null);
-    const [totalPortfolioValue, setTotalPortfolioValue] = useState(0);
-    const [currentPrices, setCurrentPrices] = useState({});
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
     const [expand, setexpand] = useState(false);
+    const [portfolioData, setPortfolioData] = useState(null);
+    const [currentPrices, setCurrentPrices] = useState({});
     const apiKey = "cv9fb89r01qkfpsjhdj0cv9fb89r01qkfpsjhdjg";
 
     useEffect(() => {
         if (user && user.userId) {
-            fetchAllPortfolioData();
+            fetchPortfolioData();
         }
-        // eslint-disable-next-line
     }, [user]);
 
-    // Fetch portfolio data and then current prices
-    const fetchAllPortfolioData = async () => {
-        setLoading(true);
-        setError(null);
+    const fetchPortfolioData = async () => {
         try {
             const response = await fetch(`http://localhost:3000/api/data/portfoliodata/${user.userId}`);
             const data = await response.json();
             if (data.status) {
                 setPortfolioData(data.data);
-                setAggregatedData(data.data.statistics);
-                setTotalPortfolioValue(data.data.statistics.totalCurrentValue || 0);
                 if (data.data.portfolios.length > 0) {
                     fetchCurrentPrices(data.data.portfolios);
                 }
-            } else {
-                throw new Error(data.message);
             }
         } catch (error) {
-            setError(error.message);
-        } finally {
-            setLoading(false);
+            console.error("Error fetching portfolio data:", error);
         }
     };
 
-    // Fetch current prices for all products
     const fetchCurrentPrices = async (portfolios) => {
         const prices = {};
         for (const portfolio of portfolios) {
@@ -58,25 +45,52 @@ export default function Sidebarportfolio() {
                     prices[portfolio.productName] = data.c;
                 }
             } catch (error) {
-                // Ignore individual errors
+                console.error(`Error fetching price for ${portfolio.productName}:`, error);
             }
         }
         setCurrentPrices(prices);
     };
 
-    // Calculate stats
+    // Calculate portfolio statistics using same logic as mainportfolio
     const getPortfolioStats = () => {
-        if (!portfolioData || !aggregatedData) return null;
-        const totalInvestment = portfolioData.statistics.totalInvested;
-        const currentBalance = totalPortfolioValue;
+        if (!portfolioData?.portfolios) return null;
+
+        // Calculate total investment (using averagePrice * currentQuantity)
+        const totalInvestment = Array.isArray(portfolioData.portfolios)
+            ? portfolioData.portfolios.reduce(
+                (sum, p) =>
+                    sum +
+                    ((p.statistics?.averagePrice || 0) *
+                        (p.statistics?.currentQuantity || 0)),
+                0
+            )
+            : 0;
+
+        // Calculate current value (using currentPrice * currentQuantity)
+        const currentBalance = Array.isArray(portfolioData.portfolios)
+            ? portfolioData.portfolios.reduce(
+                (sum, p) =>
+                    sum +
+                    ((currentPrices[p.productName] || 0) *
+                        (p.statistics?.currentQuantity || 0)),
+                0
+            )
+            : 0;
+
+        // Calculate profit/loss (current value - total investment)
         const profitLoss = currentBalance - totalInvestment;
-        const percentageChange = ((currentBalance - totalInvestment) / totalInvestment) * 100;
+        
+        // Calculate percentage change
+        // ((Current Value - Total Investment) / Total Investment) * 100
+        const percentageChange = totalInvestment > 0 
+            ? ((currentBalance - totalInvestment) / totalInvestment) * 100 
+            : 0;
+
         return {
             totalInvestment,
             currentBalance,
             profitLoss,
-            percentageChange,
-            totalStocks: portfolioData.portfolios.length
+            percentageChange
         };
     };
 
@@ -97,99 +111,100 @@ export default function Sidebarportfolio() {
         },
         {
             "title": "Overall Change (%)",
-            "value": `${stats.percentageChange.toFixed(2)}%`
+            "value": `${stats.percentageChange.toFixed(7)}%`
         },
         {
-            "title": "Total Stocks",
-            "value": stats.totalStocks
+            "title": "Active Stocks",
+            "value": portfolioData?.portfolios.filter(p => p.statistics?.currentQuantity > 0).length || 0
         }
     ] : [];
 
     return (
-        <div className="py-4 sm:mt-2 max-h-screen mt-2 font-lemonMilk text-white/70 rounded-2xl bg-gray-900">
-            <div className="flex flex-col md:w-[280px] px-2 py-2 space-y-2">
-                <div className="bg-gray-950 border-gray-800 border rounded-2xl backdrop-blur-md hover:scale-105 transition-transform duration-300 p-4 border-white/10 flex flex-col space-y-4 md:space-y-6 text-white font-satoshi justify-center items-center">
-                    <div className="text-center md:text-3xl text-xl font-semibold">
-                        <span className="text-blue-500 drop-shadow-[0_0_10px_#3b82f6] shadow-sm hover:drop-shadow-[0_0_20px_#3b82f6]">Balance</span>
+        <div className="py-4 sm:mt-2 mt-2 font-lemonMilk text-white/70 rounded-2xl bg-gray-900">
+            <motion.div 
+                className="flex flex-col md:w-[280px] px-2 py-2 space-y-2"
+                layout
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+            >
+                <motion.div 
+                    className="bg-gray-950 border-gray-800 border rounded-2xl backdrop-blur-md p-4 border-white/10 flex flex-col space-y-6 text-white font-satoshi justify-center items-center"
+                    layout
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                >
+                    {/* Title */}
+                    <div className="text-center text-2xl md:text-4xl font-semibold">
+                        <span className="text-blue-500 drop-shadow-[0_0_10px_#3b82f6] shadow-sm hover:drop-shadow-[0_0_20px_#3b82f6]">
+                            Available Balance
+                        </span>
                     </div>
-                    {error && (
-                        <div className="p-2 bg-red-500/20 text-red-400 rounded-lg w-full text-center">{error}</div>
-                    )}
-                    {loading ? (
-                        <div className="p-2 bg-blue-500/20 text-blue-400 rounded-lg w-full text-center">Loading...</div>
-                    ) : (
-                        <>
-                            <div className="space-y-2 text-center">
-                                <p className="bg-gradient-to-r from-blue-400 to-pink-500 bg-clip-text text-transparent text-4xl font-bold">
-                                    ${stats?.currentBalance.toFixed(2) || '0.00'}
-                                </p>
-                            </div>
-                            <div className="text-center flex text-lg">
-                                <p>Total Profit/Loss</p>
-                                <p className={`mx-2 ${stats?.profitLoss >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                                    {stats?.profitLoss >= 0 ? '+' : '-'}${Math.abs(stats?.profitLoss || 0).toFixed(2)}
-                                </p>
-                            </div>
-                            <div className="flex items-center justify-center flex-col w-full">
-                                {!expand && (
-                                    <button
-                                        className="p-2 rounded-full hover:bg-gray-800 transition-colors"
-                                        onClick={() => setexpand(true)}
-                                    >
-                                        <FiChevronDown size={24} />
-                                    </button>
-                                )}
-                                <AnimatePresence>
-                                    {expand && portfolioOverview.length > 0 && (
-                                        <motion.div
-                                            className="w-full duration-300 transition-all flex flex-col space-y-4"
-                                            initial={{ opacity: 0, height: 0 }}
-                                            animate={{ opacity: 1, height: 'auto' }}
-                                            exit={{ opacity: 0, height: 0 }}
-                                            transition={{ duration: 0.5, ease: "easeInOut" }}
-                                            layout
+
+                    {/* Available Balance */}
+                    <div className="space-y-2 text-center">
+                        <p className="bg-gradient-to-r from-blue-400 to-pink-500 bg-clip-text text-transparent text-4xl md:text-5xl font-bold">
+                            ${portfolioData?.userBalance?.toFixed(2) ?? "0.00"}
+                        </p>
+                    </div>
+
+                    {/* Profit/Loss */}
+                    <div className="text-center flex items-center text-lg md:text-xl">
+                        <p>Total Profit/Loss</p>
+                        <p className={`mx-2 font-bold ${stats?.profitLoss >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                            {stats?.profitLoss >= 0 ? '+' : '-'}${Math.abs(stats?.profitLoss || 0).toFixed(2)}
+                        </p>
+                    </div>
+
+                    {/* Expand/Collapse Section */}
+                    <AnimatePresence mode="wait">
+                        <motion.div 
+                            className="w-full flex justify-center items-center"
+                            layout
+                        >
+                            {!expand ? (
+                                <motion.button 
+                                    className="p-3 rounded-full hover:bg-gray-800/50 transition-colors"
+                                    onClick={() => setexpand(true)}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                >
+                                    <FiChevronDown size={28} />
+                                </motion.button>
+                            ) : (
+                                <motion.div 
+                                    className="w-full space-y-4"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                >
+                                    {portfolioOverview.map((e, index) => (
+                                        <motion.div 
+                                            className="bg-gray-900 rounded-xl p-4 text-left hover:bg-gray-800/50 transition-colors"
+                                            key={index}
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -20 }}
+                                            transition={{ delay: index * 0.1 }}
                                         >
-                                            {portfolioOverview.map((e, index) => (
-                                                <motion.div
-                                                    className="bg-gray-900 rounded-xl py-3 px-4 text-left hover:bg-gray-800/50 transition-colors"
-                                                    key={index}
-                                                    initial={{ opacity: 0 }}
-                                                    animate={{ opacity: 1 }}
-                                                    exit={{ opacity: 0 }}
-                                                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                                                >
-                                                    <p className="text-sm text-gray-400">{e.title}</p>
-                                                    <p className="text-lg font-semibold mt-1">{e.value}</p>
-                                                </motion.div>
-                                            ))}
-                                            <motion.button
-                                                className="p-2 rounded-full hover:bg-gray-800 transition-colors mt-2"
-                                                onClick={() => setexpand(false)}
-                                                initial={{ opacity: 0 }}
-                                                animate={{ opacity: 1 }}
-                                                exit={{ opacity: 0 }}
-                                            >
-                                                <FiChevronUp size={24} />
-                                            </motion.button>
+                                            <p className="text-sm text-gray-400">{e.title}</p>
+                                            <p className="text-lg md:text-xl font-semibold mt-1">{e.value}</p>
                                         </motion.div>
-                                    )}
-                                </AnimatePresence>
-                            </div>
-                        </>
-                    )}
-                </div>
-            </div>
+                                    ))}
+
+                                    <motion.button
+                                        className="w-full p-3 rounded-full hover:bg-gray-800/50 transition-colors"
+                                        onClick={() => setexpand(false)}
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                    >
+                                        <FiChevronUp size={28} />
+                                    </motion.button>
+                                </motion.div>
+                            )}
+                        </motion.div>
+                    </AnimatePresence>
+                </motion.div>
+            </motion.div>
         </div>
     );
 }
-
-<span className={`font-bold ${
-  (currentPrices[selectedStock.productName] * sellQuantity - selectedStock.statistics.averagePrice * sellQuantity) > 0
-    ? 'text-green-400'
-    : 'text-red-400'
-}`}>
-  ${(
-    (currentPrices[selectedStock.productName] * sellQuantity) -
-    (selectedStock.statistics.averagePrice * sellQuantity)
-  ).toFixed(2)}
-</span>

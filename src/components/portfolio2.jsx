@@ -2,7 +2,7 @@
 
 import Headerportfolio from './headerportfolio'
 import Mainportfolio from './mainportfolio'
-// import Sidebarportfolio from './sidebarportfolio'
+import Sidebarportfolio from './sidebarportfolio'
 
 
 export default function Portfolio2 (){
@@ -19,7 +19,7 @@ return (<div className='py-16 w-full px-4 rounded-2xl  '>
 
 <Mainportfolio/>
 
-{/* <Sidebarportfolio/> */}
+<Sidebarportfolio/>
 
 
 
