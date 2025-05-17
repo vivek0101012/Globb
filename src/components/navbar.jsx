@@ -23,7 +23,7 @@ export default function  Navbar(){
     { to: "/portfolio", label: "Portfolio" },
   ];
 
-  // Combine links based on auth state
+  
   const navLinks = [...publicLinks, ...(user ? protectedLinks : [])];
 
   const [clickid,setclickid]=useState(0);
@@ -147,7 +147,7 @@ onMouseLeave={ ()=>{
       </>
     ) : (
       <>
-        <Link to={"/test"}><div>Profile</div></Link>
+        {/* <Link to={"/test"}><div>Profile</div></Link> */}
         <div 
           onClick={handleLogout}
           className="py-2 px-4 flex justify-center cursor-pointer active:scale-90 border-[0.25px] border-[#90AFEE] opacity-80 shadow-inner shadow-sm shadow-[#90AFEE] rounded-full"

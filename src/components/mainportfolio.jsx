@@ -17,14 +17,14 @@ export default function Mainportfolio() {
   const [selectedStock, setSelectedStock] = useState(null);
   const [sellQuantity, setSellQuantity] = useState(1);
 
-  // Fetch data on component mount
+  
   useEffect(() => {
     if (user && user.userId) {
       fetchAllPortfolioData();
     }
   }, [user]);
 
-  // Fetch portfolio data
+  
   const fetchAllPortfolioData = async () => {
     setLoading(true);
     setError(null);
@@ -34,7 +34,6 @@ export default function Mainportfolio() {
       
       if (data.status) {
         setPortfolioData(data.data);
-        // Fetch current prices for all portfolio items
         if (data.data.portfolios.length > 0) {
           fetchCurrentPrices(data.data.portfolios);
         }
@@ -47,8 +46,6 @@ export default function Mainportfolio() {
       setLoading(false);
     }
   };
-
-  // Fetch current prices for all products
   const fetchCurrentPrices = async (portfolios) => {
     const prices = {};
     for (const portfolio of portfolios) {
@@ -66,8 +63,6 @@ export default function Mainportfolio() {
     }
     setCurrentPrices(prices);
   };
-
-  // Add sell handler
   const handleSell = async (portfolio) => {
     try {
       const currentPrice = currentPrices[portfolio.productName];

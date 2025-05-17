@@ -6,7 +6,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const initializeAuth = () => {
@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
         if (token) {
           const decoded = jwt_decode(token);
           
-          // Check if token is expired
+     
           const currentTime = Date.now() / 1000;
           if (decoded.exp && decoded.exp < currentTime) {
             localStorage.removeItem("token");
@@ -52,9 +52,9 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  // Provide loading state to prevent flash of unauthorized content
+
   if (loading) {
-    return null; // or return a loading spinner
+    return null;
   }
 
   return (

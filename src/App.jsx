@@ -28,7 +28,7 @@ function App() {
             <Routes>
               <Route path="/" element={<> <Home /> <Marketupdate /> <Courses/> <Testimonials /> </> } />
               
-              {/* Protected Routes */}
+        
               <Route path="/test" element={
                 <ProtectedRoute>
                   <Suspense fallback={<Loader />}>

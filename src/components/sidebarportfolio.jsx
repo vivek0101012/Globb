@@ -53,11 +53,9 @@ export default function Sidebarportfolio() {
         setCurrentPrices(prices);
     };
 
-    // Calculate portfolio statistics using same logic as mainportfolio
+    
     const getPortfolioStats = () => {
         if (!portfolioData?.portfolios) return null;
-
-        // Calculate total investment (using averagePrice * currentQuantity)
         const totalInvestment = Array.isArray(portfolioData.portfolios)
             ? portfolioData.portfolios.reduce(
                 (sum, p) =>
@@ -67,8 +65,6 @@ export default function Sidebarportfolio() {
                 0
             )
             : 0;
-
-        // Calculate current value (using currentPrice * currentQuantity)
         const currentBalance = Array.isArray(portfolioData.portfolios)
             ? portfolioData.portfolios.reduce(
                 (sum, p) =>
@@ -79,11 +75,8 @@ export default function Sidebarportfolio() {
             )
             : 0;
 
-        // Calculate profit/loss (current value - total investment)
+      
         const profitLoss = currentBalance - totalInvestment;
-        
-        // Calculate percentage change
-        // ((Current Value - Total Investment) / Total Investment) * 100
         const percentageChange = totalInvestment > 0 
             ? ((currentBalance - totalInvestment) / totalInvestment) * 100 
             : 0;
@@ -133,21 +126,21 @@ export default function Sidebarportfolio() {
                     layout
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                 >
-                    {/* Title */}
+                  
                     <div className="text-center text-2xl md:text-4xl font-semibold">
                         <span className="text-blue-500 drop-shadow-[0_0_10px_#3b82f6] shadow-sm hover:drop-shadow-[0_0_20px_#3b82f6]">
                             Available Balance
                         </span>
                     </div>
 
-                    {/* Available Balance */}
+                
                     <div className="space-y-2 text-center">
                         <p className="bg-gradient-to-r from-blue-400 to-pink-500 bg-clip-text text-transparent text-4xl md:text-5xl font-bold">
                             ${portfolioData?.userBalance?.toFixed(2) ?? "0.00"}
                         </p>
                     </div>
 
-                    {/* Profit/Loss */}
+                
                     <div className="text-center flex items-center text-lg md:text-xl">
                         <p>Total Profit/Loss</p>
                         <p className={`mx-2 font-bold ${stats?.profitLoss >= 0 ? 'text-green-500' : 'text-red-500'}`}>
@@ -155,7 +148,7 @@ export default function Sidebarportfolio() {
                         </p>
                     </div>
 
-                    {/* Expand/Collapse Section */}
+              
                     <AnimatePresence mode="wait">
                         <motion.div 
                             className="w-full flex justify-center items-center"
