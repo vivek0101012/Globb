@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from '../context/AuthContext';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 export default function Sidebarportfolio() {
     const { Balance } = useContext(StockContext);
     const { user } = useAuth();
@@ -20,7 +22,7 @@ export default function Sidebarportfolio() {
 
     const fetchPortfolioData = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/api/data/portfoliodata/${user.userId}`);
+            const response = await fetch(`${BACKEND_URL}/api/data/portfoliodata/${user.userId}`);
             const data = await response.json();
             if (data.status) {
                 setPortfolioData(data.data);

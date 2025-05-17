@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext'; // Add this import
+import { useAuth } from '../../context/AuthContext';
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
@@ -10,7 +12,7 @@ const Login = () => {
   });
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { login } = useAuth(); // Add this line
+  const { login } = useAuth();
 
   const handleChange = (e) => {
     setCredentials({
@@ -22,7 +24,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/login', credentials);
+      const response = await axios.post(`${BACKEND_URL}/api/auth/login`, credentials);
       
       if (response.data.token) {
         // Use the login function from context instead of directly setting localStorage

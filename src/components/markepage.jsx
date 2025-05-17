@@ -6,6 +6,8 @@ import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from 'react-router-dom';
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 const BuyPopup = ({ isOpen, onClose, symbol, price, onBuy }) => {
     const [quantity, setQuantity] = useState(1);
     const { user } = useAuth();
@@ -16,7 +18,7 @@ const BuyPopup = ({ isOpen, onClose, symbol, price, onBuy }) => {
         const fetchBalance = async () => {
             try {
                 if (user?.userId && isOpen) {
-                    const response = await fetch(`http://localhost:3000/api/data/portfoliodata/${user.userId}`);
+                    const response = await fetch(`${BACKEND_URL}/api/data/portfoliodata/${user.userId}`);
                     const data = await response.json();
                     if (data.status) {
                         setUserBalance(data.data.userBalance);
@@ -170,7 +172,7 @@ export default function Market() {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/api/portfolio/buy', {
+      const response = await fetch(`${BACKEND_URL}/api/portfolio/buy`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -322,7 +324,7 @@ const Stockcard = ({ symbol, count, isloading, onBuyClick }) => {
 
   const handleBuy = async (quantity) => {
     try {
-      const response = await fetch('http://localhost:3000/api/portfolio/buy', {
+      const response = await fetch(`${BACKEND_URL}/api/portfolio/buy`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -414,7 +416,7 @@ const Stockcard = ({ symbol, count, isloading, onBuyClick }) => {
         }}
       />
     </motion.div>
-  ));
+   ));
 }
 
 

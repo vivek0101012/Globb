@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 const Register = () => {
   const [formData, setFormData] = useState({
     username: '',
@@ -22,7 +24,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/register', formData);
+      const response = await axios.post(`${BACKEND_URL}/api/auth/register`, formData);
       if (response.data) {
         navigate('/login');
       }
