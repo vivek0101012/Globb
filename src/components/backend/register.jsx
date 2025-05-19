@@ -42,8 +42,19 @@ const Register = () => {
       transition={{ duration: 0.5 }}
     >
       {/* Glow Effects */}
-      <div className="absolute top-1/3 left-1/2 w-[300px] h-[200px] bg-blue-500 blur-[100px] opacity-20 rounded-full -translate-x-1/2"></div>
-      <div className="absolute bottom-1/3 left-1/2 w-32 h-32 bg-blue-500 blur-3xl opacity-20 rounded-full -translate-x-1/2"></div>
+      {/* <div className="absolute top-1/3 left-1/2 w-[300px] h-[200px] bg-blue-500 blur-[100px] opacity-20 rounded-full -translate-x-1/2"></div>
+      <div className="absolute bottom-1/3 left-1/2 w-32 h-32 bg-blue-500 blur-3xl opacity-20 rounded-full -translate-x-1/2"></div> */}
+
+<div className='md:flex hidden items-center justify-center px-4'>
+<video src="images/homeanm.mp4" 
+
+  autoPlay
+  muted
+  loop
+  playsInline
+
+width={500} height={500}  alt="" />
+</div>
 
       <div className="max-w-md w-full space-y-8 relative">
         <motion.div

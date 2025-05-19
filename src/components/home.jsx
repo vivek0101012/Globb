@@ -1,9 +1,6 @@
 
 
 
-import React from 'react';
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-
 import { motion } from "framer-motion";
 
 export default function Home(){
@@ -15,10 +12,9 @@ return <motion.div className=" py-10  mt-[-10] flex justify-center ">
 <div className=" bg-opacity-40 flex-col  text-white font-satoshi flex items-center font-light    justify-center text-center space-y-6">
 
 
-{/* Glow behind the title */}
+
 <div className="absolute top-[35%] left-1/2 w-[250px] h-[120px] bg-blue-500 blur-[100px] opacity-40 rounded-full -translate-x-1/2"></div>
 
-{/* Bottom glow near the button */}
 <div className="absolute bottom-[12%] left-1/2 w-24 h-24 bg-blue-500 blur-3xl opacity-30 rounded-full -translate-x-1/2"></div>
 
 
