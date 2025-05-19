@@ -22,37 +22,49 @@ return <motion.div className=" py-10  mt-[-10] flex justify-center ">
 <div className="absolute bottom-[12%] left-1/2 w-24 h-24 bg-blue-500 blur-3xl opacity-30 rounded-full -translate-x-1/2"></div>
 
 
-<div className=" flex justify-center items-center space-x-4">
-    <h1 className=" md:text-[128px] text-[64px]"> G</h1>
-    <h1 className=" md:text-[128px] text-[64px]"> l</h1>
-    <img src="images/logo.png" 
-     className="animate-pulse md:h-32 md:w-32 h-16 w-16 drop-shadow-[0_0_10px_rgba(144,175,238,0.8)]" 
-     alt="" />
-    <h1 className=" md:text-[128px] text-[64px]"> b</h1>
-    <h1 className=" md:text-[128px] text-[64px]"> b</h1>
+<div className="flex justify-center items-center space-x-4">
+  <h1 className="md:text-[128px] text-[64px] bg-gradient-to-r 	from-[#00c9ff] via-[#92fe9d] to-[#f6d365] text-transparent bg-clip-text drop-shadow-[0_0_25px_rgba(141,173,255,0.6)] font-semibold">
+    G
+  </h1>
 
+  <h1 className="md:text-[128px] text-[64px] bg-gradient-to-r 	from-[#00c9ff] via-[#92fe9d] to-[#f6d365] text-transparent bg-clip-text drop-shadow-[0_0_25px_rgba(141,173,255,0.6)] font-semibold">
+    l
+  </h1>
+
+  <img
+    src="images/logo.png"
+    className="animate-pulse md:h-32 md:w-32 h-16 w-16 drop-shadow-[0_0_25px_rgba(144,175,238,0.9)]"
+    alt="Logo"
+  />
+
+  <h1 className="md:text-[128px] text-[64px] bg-gradient-to-r 	from-[#00c9ff] via-[#92fe9d] to-[#f6d365] text-transparent bg-clip-text drop-shadow-[0_0_25px_rgba(141,173,255,0.6)] font-semibold">
+    b
+  </h1>
+
+  <h1 className="md:text-[128px] text-[64px] bg-gradient-to-r 	from-[#00c9ff] via-[#92fe9d] to-[#f6d365] text-transparent bg-clip-text drop-shadow-[0_0_25px_rgba(141,173,255,0.6)] font-semibold">
+    b
+  </h1>
 </div>
 
-<div className=" md:text-3xl text-lg  text-wrap "> Trade without limits, learn without risks.<br/>  <span className=" sm:text-sm opacity-75 ">real-time, and 100% educational.</span> </div>
 
+<div className="md:text-3xl text-lg text-center text-white font-light leading-snug drop-shadow-[0_0_8px_rgba(255,255,255,0.1)]">
+  Trade without limits, learn without risks.
+  <br />
+  <span className="text-sm md:text-base text-[#C0C0C0] opacity-70 tracking-wide">
+    real-time, and 100% educational.
+  </span>
+</div>
 
-<div className=" flex flex-row items-center justify-center p-4 space-x-4">
-
-<div className="py-2 px-4 animate-bounce flex flex-row  justify-center  active:scale-90 border-[0.25px]  border-[#90AFEE] opacity-80 shadow-inner shadow-[#90AFEE] rounded-full  " >
-Get Started 
+<div className="flex flex-row items-center justify-center p-4">
+  <button className="py-2 px-6 rounded-full text-white border border-[#90AFEE] bg-[#0d1b2a]/50 
+    hover:bg-[#90AFEE]/20 backdrop-blur-md shadow-inner shadow-[#90AFEE]/30 
+    transition-all duration-200 ease-in-out active:scale-95">
+    Get Started
+  </button>
 </div>
 
 
 
-
-
-</div>
-
-
-{/* <div className=" bg-none absolute x-[-200px] y  "  >
-<img src="images/homebg.gif"  className="w-[200px] h-[500px]" /> */}
-
-{/* </div> */}
 
 </div>
 

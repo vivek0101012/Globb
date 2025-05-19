@@ -26,18 +26,38 @@ export default function Footer(){
 
 <div className=" hidden  md:flex flex-col justify-center items-center space-y-2 text-white">
 
-<div className="flex md:justify-center text-white items-center space-x-4">
-    <h1 className="  md:text-[64px]"> G</h1>
-    <h1 className=" md:text-[64px]"> l</h1>
-    <img src="images/logo.png" 
-     className="animate-pulse h-16 w-16 drop-shadow-[0_0_10px_rgba(144,175,238,0.8)]" 
-     alt="" />
-    <h1 className=" md:text-[64px]"> b</h1>
-    <h1 className=" md:text-[64px]"> b</h1>
 
+
+
+<div className="flex justify-center items-center space-x-4">
+  <h1 className="md:text-[64px] bg-gradient-to-r 	from-[#00c9ff] via-[#92fe9d] to-[#f6d365] text-transparent bg-clip-text drop-shadow-[0_0_25px_rgba(141,173,255,0.6)] font-semibold">
+    G
+  </h1>
+
+  <h1 className="md:text-[64px] bg-gradient-to-r 	from-[#00c9ff] via-[#92fe9d] to-[#f6d365] text-transparent bg-clip-text drop-shadow-[0_0_25px_rgba(141,173,255,0.6)] font-semibold">
+    l
+  </h1>
+
+  <img
+    src="images/logo.png"
+    className="animate-pulse  md:h-16 md:w-16 drop-shadow-[0_0_25px_rgba(144,175,238,0.9)]"
+    alt="Logo"
+  />
+
+  <h1 className="md:text-[64px] bg-gradient-to-r 	from-[#00c9ff] via-[#92fe9d] to-[#f6d365] text-transparent bg-clip-text drop-shadow-[0_0_25px_rgba(141,173,255,0.6)] font-semibold">
+    b
+  </h1>
+
+  <h1 className="md:text-[64px] bg-gradient-to-r 	from-[#00c9ff] via-[#92fe9d] to-[#f6d365] text-transparent bg-clip-text drop-shadow-[0_0_25px_rgba(141,173,255,0.6)] font-semibold">
+    b
+  </h1>
 </div>
 
-<div>Your gateway to risk-free trading!</div>
+<div className="text-xl md:text-2xl font-medium text-center mt-4
+    bg-gradient-to-r from-[#00c9ff] via-[#92fe9d] to-[#f6d365]
+    text-transparent bg-clip-text drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+  Your gateway to risk-free trading!
+</div>
 
 </div>
 
