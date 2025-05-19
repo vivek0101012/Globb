@@ -17,6 +17,7 @@ export default function Headerportfolio(){
       const categories = [
         "Technology",
         "Healthcare",
+        
         "Energy",
         "Finance",
         "Consumer Goods"

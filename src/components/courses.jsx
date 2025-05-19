@@ -69,7 +69,7 @@ export default function Courses(){
 
 <h1 className=" text-center text-white mb-4 md:text-2xl"> ONLINE <span className="text-blue-600"> TRADING COURSES</span> </h1>
 
- <div className="grid md:grid-cols-4 grid-rows-1 overflow-x-auto px-8 space-x-4 gap-4 py-4 ">
+ <div className="grid md:grid-cols-4 grid-rows-1 overflow-x-auto px-8 gap-4 py-4 ">
  {
      resources.map((e,index)=>
  (
